@@ -1,0 +1,48 @@
+# Every analysis parameter in one place. The values are the ones used in the paper.
+
+[paths]
+# Cleaned 96-channel epochs (BIDS derivative); see preprocessing/README.md.
+epochs = "data/derivatives/decim2000_0.5Hz_tmin-0.2_tmax1__combined_quality_copy_v2"
+work = "work"          # per-recording feature files (large, not committed)
+results = "results"    # tables and maps (committed)
+figures = "figures"
+
+[design]
+conditions = ["2x MT", "10x MT", "20x MT"]
+regions = ["S1", "PFC", "ACC"]
+# Each contrast is higher minus lower intensity.
+contrasts = [["10x-2x", "10x MT", "2x MT"], ["20x-2x", "20x MT", "2x MT"], ["20x-10x", "20x MT", "10x MT"]]
+# Animal 13 ACC was excluded after visual review (persistent suspected contamination).
+excluded = [["13", "ACC"]]
+
+[epochs]
+analysis_window = [-0.2, 0.6]   # s; the stored epochs run to 1.0 s and are cropped
+trace_window = [-0.15, 0.55]    # s; stimulation-locked waveforms
+
+[power]
+# Morlet frequencies: [lowest Hz, highest Hz, count], log-spaced; cycles = f/4 clipped to 5-10.
+scalar_frequencies = [20.0, 120.0, 20]
+map_frequencies = [20.0, 200.0, 30]
+band = [35.0, 120.0]            # Hz, scalar power endpoint
+notches = [[48.0, 52.0], [98.0, 102.0]]
+window = [0.0, 0.4]             # s, scalar endpoint and map inference
+map_bin_width = 0.01            # s
+epochs_per_batch = 24
+
+[spectrum]
+window = [0.0, 0.55]            # s, static multitaper spectrum
+fit_range = [20.0, 120.0]       # Hz
+bandwidth = 8.0                 # Hz
+min_r_squared = 0.9
+peak_width_limits = [4.0, 30.0]
+max_n_peaks = 4
+min_peak_height = 0.1
+peak_threshold = 2.0
+
+[statistics]
+seed = 20260713
+bootstrap_samples = 5000
+permutations = 4096
+tfce_start = 0.0
+tfce_step = 0.2
+alpha = 0.05

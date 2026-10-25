@@ -1,0 +1,31 @@
+[project]
+name = "gradedstim"
+version = "1.0.0"
+description = "Analysis code for: Graded peripheral nerve stimulation is associated with phase-locked cortical power increases in anaesthetised pigs"
+readme = "README.md"
+license = "MIT"
+authors = [{ name = "Nickolaj Ajay Atchuthan" }]
+requires-python = ">=3.12,<3.13"
+# Versions used for the published results.
+dependencies = [
+    "mne==1.11.0",
+    "numpy==1.26.4",
+    "scipy==1.14.0",
+    "pandas==2.2.2",
+    "statsmodels==0.14.2",
+    "fooof==1.1.1",
+    # 3.9.1.post1 is the Windows rebuild of 3.9.1.
+    "matplotlib==3.9.1.post1; sys_platform == 'win32'",
+    "matplotlib==3.9.1; sys_platform != 'win32'",
+    "seaborn==0.13.2",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gradedstim"]
