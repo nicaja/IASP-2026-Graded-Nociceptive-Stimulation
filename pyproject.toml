@@ -1,7 +1,7 @@
 [project]
 name = "gradedstim"
 version = "1.0.0"
-description = "Analysis code for: Graded peripheral nerve stimulation is associated with phase-locked cortical power increases in anaesthetised pigs"
+description = "Analysis code for the IASP 2026 poster and the article on graded ulnar-nerve stimulation and S1, PFC and ACC cortical power in anaesthetised pigs"
 readme = "README.md"
 license = "MIT"
 authors = [{ name = "Nickolaj Ajay Atchuthan" }]

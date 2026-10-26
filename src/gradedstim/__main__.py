@@ -1,4 +1,4 @@
-"""Command line: python -m gradedstim {features,statistics,figures,all}."""
+"""Command line: python -m gradedstim {features,statistics,figures,page,all}."""
 
 from __future__ import annotations
 
@@ -11,7 +11,7 @@ from . import config as cfg
 
 def main() -> None:
     parser = argparse.ArgumentParser(prog="gradedstim", description=__doc__)
-    parser.add_argument("stage", choices=("features", "statistics", "figures", "all"))
+    parser.add_argument("stage", choices=("features", "statistics", "figures", "page", "all"))
     parser.add_argument("--config", type=Path, default=Path("config.toml"))
     parser.add_argument("--epochs", type=Path, help="override paths.epochs in the config")
     parser.add_argument("--workers", type=int, default=6)
@@ -29,6 +29,9 @@ def main() -> None:
     if args.stage in ("figures", "all"):
         from .figures import make_all
         make_all(config)
+    if args.stage in ("page", "all"):
+        from .page import make
+        make(config)
 
 
 if __name__ == "__main__":

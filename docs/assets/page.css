@@ -1,0 +1,70 @@
+/* The IASP 2026 poster palette: warm paper, ink, sand-terracotta-oxblood for intensity, teal for evoked power. */
+:root {
+  --paper: #F4F1EA; --ink: #22211E; --body: #3A3833; --muted: #6B675F; --faint: #ABA597; --rule: #CBC3B4;
+  --shade: #EAE5DA; --teal: #1F6F78;
+  --serif: "Sitka Text", "Sitka", Charter, Georgia, serif;
+  --sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--paper); color: var(--body); }
+body { font: 17px/1.6 var(--sans); }
+main { max-width: 1000px; margin: 0 auto; padding: 44px 20px 40px; }
+a { color: inherit; text-decoration-color: var(--faint); text-underline-offset: 3px; }
+a:hover { text-decoration-color: currentColor; }
+button { font: inherit; color: inherit; }
+button:focus-visible, a:focus-visible { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+.kicker { margin: 0 0 10px; font-size: 14px; letter-spacing: .02em; color: var(--muted); }
+h1 { font: 600 2.05rem/1.18 var(--serif); color: var(--ink); margin: 0 0 14px; max-width: 26em; }
+h2 { font: 600 1.3rem/1.3 var(--serif); color: var(--ink); margin: 0 0 14px; padding-top: 14px; border-top: 1px solid var(--rule); }
+.byline { margin: 0; font-size: 14.5px; color: var(--muted); }
+.lede { margin: 20px 0 0; max-width: 46em; font-size: 18px; color: var(--body); }
+section { margin-top: 48px; }
+.label { margin: 0 0 4px; font-size: 13px; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+h3 { font: 600 1.08rem/1.35 var(--serif); color: var(--ink); margin: 0 0 6px; }
+
+.columns { display: grid; grid-template-columns: 1fr 1.6fr; gap: 28px 40px; }
+.columns p { margin: 0; }
+.columns ol { margin: 0; padding-left: 1.2em; }
+.columns li { margin-bottom: 4px; }
+
+.findings { display: grid; grid-template-columns: 1fr 1fr; gap: 26px 40px; }
+.findings article p:last-child { margin: 0; }
+
+.controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin-bottom: 8px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.tabs button, .play {
+  border: 1px solid var(--rule); background: transparent; border-radius: 999px; padding: 3px 13px;
+  font-size: 14px; cursor: pointer; color: var(--muted);
+}
+.tabs button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.play { color: var(--ink); }
+.readout { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+#explorer { display: block; width: 100%; height: auto; touch-action: none; user-select: none; }
+#explorer text { font-family: var(--sans); fill: var(--muted); font-size: 12px; }
+#explorer .region { fill: var(--ink); font-weight: 600; font-size: 14px; }
+#explorer .head { fill: var(--muted); font-size: 13px; }
+#explorer .axis { stroke: var(--faint); stroke-width: 1; fill: none; }
+#explorer .zero { stroke: var(--faint); stroke-width: .8; }
+#explorer .cursor { stroke: var(--ink); stroke-width: 1; }
+#explorer .outline { stroke: var(--ink); stroke-width: 1.4; fill: none; }
+#explorer .hit { fill: transparent; cursor: ew-resize; }
+
+.caption { margin: 8px 0 0; font-size: 14.5px; color: var(--muted); max-width: 52em; }
+
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 22px 20px; }
+.gallery a { display: block; text-decoration: none; }
+.gallery img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: contain; background: #fff;
+  border: 1px solid var(--rule); border-radius: 3px; }
+.gallery span { display: block; margin-top: 6px; font-size: 14px; line-height: 1.4; color: var(--body); }
+.gallery b { color: var(--ink); font-weight: 600; }
+
+footer { margin-top: 48px; padding-top: 12px; border-top: 1px solid var(--rule); font-size: 14px; color: var(--muted); }
+code { font-size: .92em; }
+@media (max-width: 720px) {
+  h1 { font-size: 1.6rem; } body { font-size: 16px; }
+  .columns, .findings { grid-template-columns: 1fr; }
+  .scroll { overflow-x: auto; margin: 0 -20px; padding: 0 20px; }
+  #explorer { width: 760px; max-width: none; touch-action: pan-x pan-y; }
+}
