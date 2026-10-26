@@ -1,8 +1,8 @@
 # IASP 2026: Graded Nociceptive Stimulation Across S1, PFC and ACC
 
-[![S1, PFC and ACC responses at 2×, 10× and 20× motor threshold beside the corrected total-power maps](docs/figures/time-sweep.gif)](https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/)
+[![Each animal's waveforms at 2× and 20× motor threshold and its change in total, evoked and induced power](docs/figures/each-animal.gif)](https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/)
 
-*Responses at 2×, 10× and 20× motor threshold (MT) beside the 20× vs 2× MT total-power maps, outlined where they survive correction. [Interactive version](https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/)*
+*One animal at a time: its waveforms at 2× and 20× motor threshold (MT) and its power ratio, one dot per animal. Evoked power was higher at 20× MT in 14 of 18 animals in S1, 17 of 18 in PFC and 17 of 17 in ACC. [Interactive version](https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/)*
 
 Analysis code, results and figures for our IASP 2026 poster and the accompanying article. We recorded S1, PFC and ACC simultaneously in 18 anaesthetised pigs while stimulating the ulnar nerve at 2, 10 and 20 times motor threshold, and asked which part of the cortical response follows stimulus intensity.
 
@@ -34,7 +34,7 @@ Separating the response components revealed intensity effects that a broad power
 
 ## Interactive page
 
-The [page](https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/) puts the three regions side by side: the waveforms at each intensity, the total-power map for any of the three contrasts with its corrected region, and the total, evoked and induced power ratios. A time cursor runs through the response, and hovering over a map gives its value at that time and frequency. `python -m gradedstim page` writes its data and the GIF above from `results/`.
+The [page](https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/) shows every animal's change in total, evoked and induced power for any region and contrast, beside the mixed-model estimate. Each animal's change is the difference between the two intensities within each sequence, averaged within the animal, the same measure correlated in Figure S7. Choosing an animal shows its own waveforms, and the total-power map for the same contrast sits below, outlined where it survives correction. `python -m gradedstim page` writes the page's data and the GIF above from `results/`.
 
 ## Figures
 
