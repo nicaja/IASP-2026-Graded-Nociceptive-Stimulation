@@ -38,16 +38,21 @@
     </section>
 
     <section aria-labelledby="explorer-title">
-      <h2 id="explorer-title">Response, time–frequency map and power components in each region</h2>
+      <h2 id="explorer-title">How each animal's power changed</h2>
       <div class="controls">
+        <div class="tabs" role="group" aria-label="Region" id="regions"></div>
         <div class="tabs" role="group" aria-label="Contrast" id="contrasts"></div>
-        <button type="button" id="play" class="play">Play</button>
-        <span class="readout" id="readout" aria-live="polite"></span>
       </div>
       <div class="scroll">
-      <svg id="explorer" viewBox="0 0 960 622" role="img" aria-label="For S1, PFC and ACC: the averaged response at 2, 10 and 20 times motor threshold, the total-power difference map for the selected contrast with its corrected region, and the total, evoked and induced power ratios."></svg>
+      <svg id="explorer" viewBox="0 0 960 456" role="img" aria-label="For the selected region and contrast: each animal's ratio of total, evoked and induced power between the two intensities, with the model estimate; the waveforms of the selected animal or the mean of all animals; and the total-power difference map."></svg>
       </div>
-      <p class="caption">Mean ± SE across animals; drag across a panel or press Play to move the time cursor, and hover over a map for its value. Outlines mark corrected map bins and filled markers Holm-adjusted P &lt; 0.05.</p>
+      <div class="controls stepper">
+        <button type="button" id="previous" class="pill">‹ Previous animal</button>
+        <button type="button" id="next" class="pill">Next animal ›</button>
+        <button type="button" id="all" class="pill">All animals</button>
+        <span class="readout" id="readout" aria-live="polite"></span>
+      </div>
+      <p class="caption">One dot per animal: its change between the two intensities, averaged over its stimulation sequences, with a line joining the same animal across total, evoked and induced power. Squares are the mixed-model estimates with 95% confidence intervals, filled where Holm-adjusted P &lt; 0.05. Hover over or click an animal to see its own waveforms; ratios above 3 are drawn as triangles at the top.</p>
     </section>
 
     <section aria-labelledby="findings-title">
