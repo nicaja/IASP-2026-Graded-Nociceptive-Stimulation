@@ -5,7 +5,7 @@
 epochs = "data/derivatives/decim2000_0.5Hz_tmin-0.2_tmax1__combined_quality_copy_v2"
 work = "work"          # per-recording feature files (large, not committed)
 results = "results"    # tables and maps (committed)
-figures = "figures"
+figures = "docs/figures"
 
 [design]
 conditions = ["2x MT", "10x MT", "20x MT"]

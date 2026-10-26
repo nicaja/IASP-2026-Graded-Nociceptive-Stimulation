@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Temporal and Spectral Signatures of Graded Nociceptive Stimulation Across S1, PFC, and ACC</title>
+  <meta name="description" content="IASP 2026 poster 10418: cortical responses to graded ulnar-nerve stimulation recorded simultaneously in S1, PFC and ACC of anaesthetised pigs, with an interactive figure.">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23F4F1EA'/%3E%3Crect x='3' y='9' width='2.5' height='4' fill='%23D3A15F'/%3E%3Crect x='6.75' y='6' width='2.5' height='7' fill='%23B8582F'/%3E%3Crect x='10.5' y='3' width='2.5' height='10' fill='%236E1F2B'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/page.css">
+</head>
+<body>
+  <main>
+    <header>
+      <p class="kicker">IASP 2026 World Congress on Pain · Bangkok · Poster 10418</p>
+      <h1>Temporal and Spectral Signatures of Graded Nociceptive Stimulation Across S1, PFC, and ACC in a Large-Animal Intracranial Model</h1>
+      <p class="byline">Nickolaj Ajay Atchuthan, Christian Kruse Pedersen, Winnie Jensen and Suzan Meijs · Center for Neuroplasticity and Pain, Aalborg University<br>
+        <a href="poster.pdf">Poster (PDF)</a> · <a href="https://github.com/nicaja/IASP-2026-Graded-Nociceptive-Stimulation">Code and results on GitHub</a></p>
+      <p class="lede">We recorded S1, PFC and ACC simultaneously in 18 anaesthetised pigs while stimulating the ulnar nerve at 2, 10 and 20 times motor threshold. Graded stimulation increased phase-locked (evoked) power in all three regions, and corrected time–frequency maps localised early total-power differences in S1 and ACC.</p>
+    </header>
+
+    <section class="study" aria-labelledby="study-title">
+      <h2 id="study-title">Study</h2>
+      <div class="columns">
+        <div>
+          <p class="label">Research questions</p>
+          <ol>
+            <li>Does cortical power increase with stimulation intensity in S1, PFC and ACC?</li>
+            <li>Is the increase phase-locked or non-phase-locked?</li>
+            <li>When and at which frequencies does it occur?</li>
+          </ol>
+        </div>
+        <div>
+          <p class="label">Methods</p>
+          <p>Eighteen female Danish Landrace pigs were anaesthetised with propofol and fentanyl. Micro-ECoG arrays were placed on S1 and PFC, and a depth array was introduced towards the ACC (17 animals after quality control). The right ulnar nerve was stimulated with biphasic pulses at 2×, 10× and 20× motor threshold (MT) in ascending order, with stimulus onsets jittered by ±250 ms (154 sequences). Power at 35–120 Hz over 0–400 ms was compared between intensities with mixed models (animal random effects, Holm correction), and 20–200 Hz time–frequency maps with TFCE.</p>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="explorer-title">
+      <h2 id="explorer-title">Response, time–frequency map and power components in each region</h2>
+      <div class="controls">
+        <div class="tabs" role="group" aria-label="Contrast" id="contrasts"></div>
+        <button type="button" id="play" class="play">Play</button>
+        <span class="readout" id="readout" aria-live="polite"></span>
+      </div>
+      <div class="scroll">
+      <svg id="explorer" viewBox="0 0 960 622" role="img" aria-label="For S1, PFC and ACC: the averaged response at 2, 10 and 20 times motor threshold, the total-power difference map for the selected contrast with its corrected region, and the total, evoked and induced power ratios."></svg>
+      </div>
+      <p class="caption">Mean ± SE across animals; drag across a panel or press Play to move the time cursor, and hover over a map for its value. Outlines mark corrected map bins and filled markers Holm-adjusted P &lt; 0.05.</p>
+    </section>
+
+    <section aria-labelledby="findings-title">
+      <h2 id="findings-title">Findings</h2>
+      <div class="findings">
+        <article>
+          <p class="label">Waveforms</p>
+          <h3>All three regions showed a stimulation-locked response</h3>
+          <p>Animal-averaged waveforms at 2×, 10× and 20× MT are in Figure 3 and the waveforms of every animal in Figure S4.</p>
+        </article>
+        <article>
+          <p class="label">Power components</p>
+          <h3>Evoked power was higher at 10× and 20× than at 2× MT in all three regions</h3>
+          <p>At 20× MT, evoked power was 1.25 times the 2× MT value in S1 and PFC and 1.75 times in ACC; all six 10× and 20× vs 2× contrasts had Holm P ≤ 0.005. Evoked power was also higher at 20× than at 10× MT in PFC and ACC. No total- or induced-power contrast survived correction (Figure 4).</p>
+        </article>
+        <article>
+          <p class="label">Time–frequency maps</p>
+          <h3>Corrected total-power differences appeared within ~160 ms in S1 and ACC</h3>
+          <p>Four of the nine maps survived correction: 10× and 20× vs 2× MT in S1 and ACC. Differences were largest at 20–30 Hz, 85–105 ms after stimulation; at 20× vs 2× MT the ACC cluster extended to ~160 Hz. No map survived in PFC or for 20× vs 10× MT (Figure 5).</p>
+        </article>
+        <article>
+          <p class="label">Conclusions</p>
+          <h3>Separating the response components revealed effects a broad power average did not</h3>
+          <p>Cortical measures of nociception should state their response component and recording site. Recorded under general anaesthesia, these responses capture cortical nociceptive processing. Electrical nerve stimulation bypasses peripheral receptors, so responses to natural noxious stimuli may differ, and all animals were female.</p>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="figures-title">
+      <h2 id="figures-title">Figures of the accompanying article</h2>
+      <div class="gallery" id="gallery"></div>
+    </section>
+
+    <footer>
+      <p>Every number and panel on this page comes from <code>results/</code> in the repository, written by the code there. The recordings are available from the corresponding author on reasonable request.</p>
+    </footer>
+  </main>
+  <script type="module" src="assets/page.js"></script>
+</body>
+</html>
