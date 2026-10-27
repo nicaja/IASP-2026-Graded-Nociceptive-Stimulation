@@ -43,22 +43,23 @@ h3 { font: 600 1.08rem/1.35 var(--serif); color: var(--ink); margin: 0 0 6px; }
 .pill:hover, .tabs button:hover { border-color: var(--muted); }
 .readout { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; margin-left: 4px; }
 
-#explorer { display: block; width: 100%; height: auto; user-select: none; }
-#explorer text { font-family: var(--sans); fill: var(--muted); font-size: 12px; }
-#explorer .head { fill: var(--muted); font-size: 13px; }
-#explorer .column { font-size: 13px; font-weight: 600; }
-#explorer .axis { stroke: var(--faint); stroke-width: 1; fill: none; }
-#explorer .zero { stroke: var(--faint); stroke-width: .8; }
-#explorer .unity { stroke: var(--faint); stroke-width: 1; stroke-dasharray: 2 3; }
-#explorer .outline { stroke: var(--ink); stroke-width: 1.4; fill: none; }
-#explorer .animal-line { fill: none; stroke: var(--faint); stroke-width: 1; opacity: .55; }
-#explorer .animal-dot { opacity: .7; }
-#explorer.focused .animal-line { opacity: .22; }
-#explorer.focused .animal-dot { opacity: .3; }
-#explorer .animal-line.active { stroke: var(--ink); stroke-width: 1.8; opacity: 1; }
-#explorer .animal-dot.active { opacity: 1; stroke: var(--ink); stroke-width: 1.5; }
-#explorer .hit { fill: transparent; cursor: pointer; }
-#explorer .hit-line { fill: none; stroke: transparent; stroke-width: 7; cursor: pointer; }
+.figure { display: grid; grid-template-columns: 560fr 390fr; align-items: start; }
+.plot { display: block; width: 100%; height: auto; user-select: none; }
+.plot text { font-family: var(--sans); fill: var(--muted); font-size: 12px; }
+.plot .head { fill: var(--muted); font-size: 13px; }
+.plot .column { font-size: 13px; font-weight: 600; }
+.plot .axis { stroke: var(--faint); stroke-width: 1; fill: none; }
+.plot .zero { stroke: var(--faint); stroke-width: .8; }
+.plot .unity { stroke: var(--faint); stroke-width: 1; stroke-dasharray: 2 3; }
+.plot .outline { stroke: var(--ink); stroke-width: 1.4; fill: none; }
+.plot .animal-line { fill: none; stroke: var(--faint); stroke-width: 1; opacity: .55; }
+.plot .animal-dot { opacity: .7; }
+.plot.focused .animal-line { opacity: .22; }
+.plot.focused .animal-dot { opacity: .3; }
+.plot .animal-line.active { stroke: var(--ink); stroke-width: 1.8; opacity: 1; }
+.plot .animal-dot.active { opacity: 1; stroke: var(--ink); stroke-width: 1.5; }
+.plot .hit { fill: transparent; cursor: pointer; }
+.plot .hit-line { fill: none; stroke: transparent; stroke-width: 7; cursor: pointer; }
 
 .caption { margin: 8px 0 0; font-size: 14.5px; color: var(--muted); max-width: 52em; }
 
@@ -74,6 +75,5 @@ code { font-size: .92em; }
 @media (max-width: 720px) {
   h1 { font-size: 1.6rem; } body { font-size: 16px; }
   .columns, .findings { grid-template-columns: 1fr; }
-  .scroll { overflow-x: auto; margin: 0 -20px; padding: 0 20px; }
-  #explorer { width: 760px; max-width: none; }
+  .figure { grid-template-columns: 1fr; row-gap: 10px; }
 }

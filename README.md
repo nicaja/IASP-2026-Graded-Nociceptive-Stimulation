@@ -6,7 +6,7 @@
 
 Analysis code, results and figures for our IASP 2026 poster and the accompanying article. We recorded S1, PFC and ACC simultaneously in 18 anaesthetised pigs while stimulating the ulnar nerve at 2, 10 and 20 times motor threshold, and asked which part of the cortical response follows stimulus intensity.
 
-**IASP 2026 World Congress on Pain · Bangkok, 26–30 October 2026 · Abstract 10418**
+**IASP 2026 World Congress on Pain · Bangkok · Poster 105, Thursday 29 October 2026**
 
 ## Poster
 
@@ -15,6 +15,8 @@ Analysis code, results and figures for our IASP 2026 poster and the accompanying
 Nickolaj Ajay Atchuthan, Christian Kruse Pedersen, Winnie Jensen and Suzan Meijs. Center for Neuroplasticity and Pain, Aalborg University.
 
 [Poster (PDF)](docs/poster.pdf) · [Interactive page](https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/)
+
+Poster 105 in poster session 6 (Thursday 29 October 2026, 15:15–16:45, Exhibit Hall EH102-103); submission 10418.
 
 The same code produces every result in the article *Graded peripheral nerve stimulation is associated with phase-locked cortical power increases in anaesthetised pigs* (in preparation).
 
@@ -93,7 +95,7 @@ Before release, this code was run on the same data and every output was compared
 - Features of all 154 sequences agree to floating-point rounding (relative differences below 2 × 10⁻¹³).
 - The corrected time–frequency maps, permutation null distributions and corrected masks are identical.
 - Power estimates agree within 10⁻¹⁰ and their P values within 10⁻⁷. The aperiodic estimates agree within 2 × 10⁻⁸ (their spectral fits are slightly more sensitive to rounding). Every Holm decision is unchanged in all four analyses.
-- Supplementary Tables S1–S6 come out identical to the published tables.
+- Supplementary Tables S1–S6 come out identical to the article's tables.
 - `preprocessing/clean_epochs.py` reproduces the cleaned epochs of all 154 sequences bit for bit. Re-filtering a raw recording with `make_epochs.py` on a CPU differs from the original GPU-filtered epochs by at most 0.0001 µV.
 
 `pytest` checks the committed results for internal consistency: Holm adjustments, confidence intervals and the map correction.

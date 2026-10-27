@@ -20,6 +20,10 @@ dependencies = [
     "seaborn==0.13.2",
 ]
 
+[project.urls]
+Homepage = "https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/"
+Repository = "https://github.com/nicaja/IASP-2026-Graded-Nociceptive-Stimulation"
+
 [project.optional-dependencies]
 test = ["pytest"]
 
