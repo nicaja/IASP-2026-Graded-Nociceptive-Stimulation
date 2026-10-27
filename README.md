@@ -6,7 +6,7 @@
 
 Analysis code, results and figures for our IASP 2026 poster and the accompanying article. We recorded S1, PFC and ACC simultaneously in 18 anaesthetised pigs while stimulating the ulnar nerve at 2, 10 and 20 times motor threshold, and asked which part of the cortical response follows stimulus intensity.
 
-**IASP 2026 World Congress on Pain · Bangkok, 26–30 October 2026 · Poster 10418**
+**IASP 2026 World Congress on Pain · Bangkok, 26–30 October 2026 · Abstract 10418**
 
 ## Poster
 
