@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this code or these results, please cite the poster below."
+title: "Analysis code for: Temporal and Spectral Signatures of Graded Nociceptive Stimulation Across S1, PFC, and ACC in a Large-Animal Intracranial Model"
+type: software
+version: 1.0.0
+date-released: 2026-10-25
+license: MIT
+repository-code: "https://github.com/nicaja/IASP-2026-Graded-Nociceptive-Stimulation"
+url: "https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/"
+authors:
+  - family-names: Atchuthan
+    given-names: Nickolaj Ajay
+    orcid: "https://orcid.org/0009-0008-3474-6210"
+    affiliation: "Center for Neuroplasticity and Pain, Aalborg University"
+preferred-citation:
+  type: generic
+  title: "Temporal and Spectral Signatures of Graded Nociceptive Stimulation Across S1, PFC, and ACC in a Large-Animal Intracranial Model"
+  authors:
+    - family-names: Atchuthan
+      given-names: Nickolaj Ajay
+    - family-names: Pedersen
+      given-names: Christian Kruse
+    - family-names: Jensen
+      given-names: Winnie
+    - family-names: Meijs
+      given-names: Suzan
+  conference:
+    name: "IASP 2026 World Congress on Pain"
+    city: Bangkok
+    country: TH
+    date-start: 2026-10-26
+    date-end: 2026-10-30
+  year: 2026
+  month: 10
+  notes: "Poster 105, poster session 6, 29 October 2026."

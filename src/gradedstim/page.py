@@ -112,7 +112,7 @@ def write_gif(data: dict, target: Path, contrast: str = "20x-2x") -> None:
     figure = plt.figure(figsize=(8.2, 5.6), facecolor=PAPER)
     grid = figure.add_gridspec(3, 2, width_ratios=[1.35, 1], left=0.07, right=0.985, top=0.86, bottom=0.09,
                                hspace=0.42, wspace=0.2)
-    jitter = np.linspace(-0.16, 0.16, len(subjects))[np.argsort(np.random.default_rng(3).permutation(len(subjects)))]
+    jitter = np.random.default_rng(3).permutation(np.linspace(-0.16, 0.16, len(subjects)))
     rows = []
     for r, region in enumerate(REGIONS):
         wave = figure.add_subplot(grid[r, 0], facecolor=PAPER)

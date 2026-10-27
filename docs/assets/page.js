@@ -3,11 +3,16 @@ const NS = 'http://www.w3.org/2000/svg';
 const INTENSITY = ['#D3A15F', '#B8582F', '#6E1F2B'];
 const COMPONENTS = [['total', 'Total', '#22211E'], ['evoked', 'Evoked', '#1F6F78'], ['induced', 'Induced', '#B58A55']];
 const STOPS = [[0, '#2E6F86'], [0.25, '#9DBDC6'], [0.5, '#F4F1EA'], [2 / 3, '#E2B48F'], [5 / 6, '#B8582F'], [1, '#6E1F2B']];
-const STRIP = { top: 64, bottom: 404, columns: [160, 300, 440] };
 const RATIO = [0.75, 3];
+const TOP = 64, BOTTOM = 404;
 const WAVE = { left: 618, right: 950, top: 64, bottom: 214 };
 const MAP = { left: 618, right: 818, top: 288, bottom: 404 };
 const T0 = -150, T1 = 550;
+// The strip plot and the trace panel are separate SVGs in one coordinate space, so they can stack on phones.
+const narrow = matchMedia('(max-width: 719px)');
+const stripLayout = () => narrow.matches
+  ? { left: 70, right: 400, columns: [120, 235, 350], square: 42, view: '0 0 420 456' }
+  : { left: 80, right: 520, columns: [160, 300, 440], square: 52, view: '0 0 560 456' };
 
 const el = (name, attrs = {}, parent) => {
   const node = document.createElementNS(NS, name);
@@ -28,12 +33,15 @@ function colour(u) {
 const times = r => `${r.toFixed(2)}×`;
 
 const data = await (await fetch('data/page.json')).json();
-const svg = document.getElementById('explorer');
+const left = document.getElementById('strip-plot');
+const right = document.getElementById('trace-plot');
 const readout = document.getElementById('readout');
 const state = { region: 0, contrast: 1, pinned: null, hover: null };
+const groups = {};
+let STRIP = stripLayout();
 const animalName = a => `Animal ${Number(data.animals[a])}`;
 
-const yRatio = r => STRIP.bottom - Math.log(Math.min(Math.max(r, RATIO[0]), RATIO[1]) / RATIO[0]) / Math.log(RATIO[1] / RATIO[0]) * (STRIP.bottom - STRIP.top);
+const yRatio = r => BOTTOM - Math.log(Math.min(Math.max(r, RATIO[0]), RATIO[1]) / RATIO[0]) / Math.log(RATIO[1] / RATIO[0]) * (BOTTOM - TOP);
 const xWave = t => WAVE.left + (t - T0) / (T1 - T0) * (WAVE.right - WAVE.left);
 const xMap = t => MAP.left + t / 400 * (MAP.right - MAP.left);
 const yFreq = f => MAP.bottom - Math.log(f / 20) / Math.log(10) * (MAP.bottom - MAP.top);
@@ -45,37 +53,45 @@ const spread = values => {
   return offsets;
 };
 
-// Static frame.
-text(svg, 80, 22, 'Change in each animal: power ratio, higher ÷ lower intensity', { class: 'head' });
-STRIP.columns.forEach((x, k) => text(svg, x, 50, COMPONENTS[k][1], { 'text-anchor': 'middle', class: 'column', style: `fill:${COMPONENTS[k][2]}` }));
-el('line', { x1: 80, x2: 520, y1: yRatio(1), y2: yRatio(1), class: 'unity' }, svg);
-el('path', { d: `M80,${STRIP.top - 4}V${STRIP.bottom}`, class: 'axis' }, svg);
-[0.8, 1, 1.5, 2, 3].forEach(v => text(svg, 74, yRatio(v) + 4, v, { 'text-anchor': 'end' }));
-const strips = el('g', {}, svg);
-const counts = el('g', {}, svg);
-const waveHead = text(svg, WAVE.left, 22, '', { class: 'head' });
-const waveLegend = el('g', {}, svg);
-const waves = el('g', {}, svg);
-const mapHead = text(svg, MAP.left, 274, '', { class: 'head' });
-const maps = el('g', {}, svg);
-el('path', { d: `M${MAP.left},${MAP.top}V${MAP.bottom}H${MAP.right}`, class: 'axis' }, svg);
-[20, 50, 100, 200].forEach(f => text(svg, MAP.left - 6, yFreq(f) + 4, f === 200 ? '200 Hz' : f, { 'text-anchor': 'end' }));
-[0, 200, 400].forEach(v => text(svg, xMap(v), MAP.bottom + 16, v, { 'text-anchor': 'middle' }));
-text(svg, (MAP.left + MAP.right) / 2, MAP.bottom + 34, 'Time (ms)', { 'text-anchor': 'middle' });
-const legendHeight = (MAP.bottom - MAP.top) / 40;
-for (let i = 0; i < 40; i++) el('rect', { x: 846, y: MAP.bottom - (i + 1) * legendHeight, width: 8, height: legendHeight + 0.5, fill: colour(i / 39) }, svg);
-text(svg, 860, MAP.top + 8, `+${data.map.limit}`);
-text(svg, 860, (MAP.top + MAP.bottom) / 2 + 4, '0');
-text(svg, 860, MAP.bottom, `−${data.map.limit}`);
-text(svg, 846, MAP.bottom + 16, 'log10 power');
+function build() {
+  STRIP = stripLayout();
+  left.setAttribute('viewBox', STRIP.view);
+  left.replaceChildren();
+  right.replaceChildren();
+  text(left, STRIP.left, 22, 'Each animal’s power ratio, higher ÷ lower intensity', { class: 'head' });
+  STRIP.columns.forEach((x, k) => text(left, x, 50, COMPONENTS[k][1], { 'text-anchor': 'middle', class: 'column', style: `fill:${COMPONENTS[k][2]}` }));
+  el('line', { x1: STRIP.left, x2: STRIP.right, y1: yRatio(1), y2: yRatio(1), class: 'unity' }, left);
+  el('path', { d: `M${STRIP.left},${TOP - 4}V${BOTTOM}`, class: 'axis' }, left);
+  [0.8, 1, 1.5, 2, 3].forEach(v => text(left, STRIP.left - 6, yRatio(v) + 4, v, { 'text-anchor': 'end' }));
+  groups.strips = el('g', {}, left);
+  groups.counts = el('g', {}, left);
+
+  groups.waveHead = text(right, WAVE.left, 22, '', { class: 'head' });
+  groups.waveLegend = el('g', {}, right);
+  groups.waves = el('g', {}, right);
+  groups.mapHead = text(right, MAP.left, 274, '', { class: 'head' });
+  groups.maps = el('g', {}, right);
+  el('path', { d: `M${MAP.left},${MAP.top}V${MAP.bottom}H${MAP.right}`, class: 'axis' }, right);
+  [20, 50, 100, 200].forEach(f => text(right, MAP.left - 6, yFreq(f) + 4, f === 200 ? '200 Hz' : f, { 'text-anchor': 'end' }));
+  [0, 200, 400].forEach(v => text(right, xMap(v), MAP.bottom + 16, v, { 'text-anchor': 'middle' }));
+  text(right, (MAP.left + MAP.right) / 2, MAP.bottom + 34, 'Time (ms)', { 'text-anchor': 'middle' });
+  const step = (MAP.bottom - MAP.top) / 40;
+  for (let i = 0; i < 40; i++) el('rect', { x: 846, y: MAP.bottom - (i + 1) * step, width: 8, height: step + 0.5, fill: colour(i / 39) }, right);
+  text(right, 860, MAP.top + 8, `+${data.map.limit}`);
+  text(right, 860, (MAP.top + MAP.bottom) / 2 + 4, '0');
+  text(right, 860, MAP.bottom, `−${data.map.limit}`);
+  text(right, 846, MAP.bottom + 16, 'log10 power');
+  update(true);
+}
 
 function drawStrips() {
-  strips.replaceChildren(); counts.replaceChildren();
+  groups.strips.replaceChildren();
+  groups.counts.replaceChildren();
   const key = data.contrasts[state.contrast][0], region = data.regions[state.region];
   const change = data.change[key][region], model = data.model[key][region];
   const ratios = COMPONENTS.map(([k]) => change[k].map(v => v === null ? null : 10 ** v));
   const offsets = ratios.map(spread);
-  const lines = el('g', {}, strips), dots = el('g', {}, strips), hits = el('g', {}, strips);
+  const lines = el('g', {}, groups.strips), dots = el('g', {}, groups.strips), hits = el('g', {}, groups.strips);
   data.animals.forEach((_, a) => {
     if (ratios[0][a] === null) return;
     const points = STRIP.columns.map((x, k) => [x + offsets[k][a], yRatio(ratios[k][a])]);
@@ -88,23 +104,23 @@ function drawStrips() {
     el('polyline', { points: points.map(p => p.join(',')).join(' '), class: 'hit-line', 'data-animal': a }, hits);
   });
   COMPONENTS.forEach(([k, label, hue], c) => {
-    const [ratio, low, high, p] = model[k], x = STRIP.columns[c] + 52;
-    el('line', { x1: x, x2: x, y1: yRatio(low), y2: yRatio(high), stroke: hue, 'stroke-width': 2 }, strips);
-    el('rect', { x: x - 5, y: yRatio(ratio) - 5, width: 10, height: 10, fill: p < 0.05 ? hue : '#F4F1EA', stroke: hue, 'stroke-width': 1.6 }, strips)
+    const [ratio, low, high, p] = model[k], x = STRIP.columns[c] + STRIP.square;
+    el('line', { x1: x, x2: x, y1: yRatio(low), y2: yRatio(high), stroke: hue, 'stroke-width': 2 }, groups.strips);
+    el('rect', { x: x - 5, y: yRatio(ratio) - 5, width: 10, height: 10, fill: p < 0.05 ? hue : '#F4F1EA', stroke: hue, 'stroke-width': 1.6 }, groups.strips)
       .append(Object.assign(document.createElementNS(NS, 'title'), { textContent: `${label}: model estimate ${times(ratio)} (95% CI ${times(low)}–${times(high)}), Holm P = ${p}` }));
     const valid = ratios[c].filter(v => v !== null);
-    text(counts, STRIP.columns[c], STRIP.bottom + 22, `${valid.filter(v => v > 1).length} of ${valid.length} higher`, { 'text-anchor': 'middle' });
+    text(groups.counts, STRIP.columns[c], BOTTOM + 22, `${valid.filter(v => v > 1).length} of ${valid.length} higher`, { 'text-anchor': 'middle' });
   });
 }
 
 function drawMap() {
-  maps.replaceChildren();
+  groups.maps.replaceChildren();
   const { f, fEdges, tEdges, effect, mask, limit } = data.map;
   const values = effect[state.contrast][state.region], corrected = mask[state.contrast][state.region];
   const yEdge = fEdges.map(v => yFreq(Math.min(200, Math.max(20, v))));
   for (let i = 0; i < f.length; i++) for (let j = 0; j < tEdges.length - 1; j++) {
     el('rect', { x: xMap(tEdges[j]).toFixed(2), y: yEdge[i + 1].toFixed(2), width: (xMap(tEdges[j + 1]) - xMap(tEdges[j]) + 0.4).toFixed(2),
-      height: (yEdge[i] - yEdge[i + 1] + 0.4).toFixed(2), fill: colour((values[i][j] / limit + 1) / 2) }, maps);
+      height: (yEdge[i] - yEdge[i + 1] + 0.4).toFixed(2), fill: colour((values[i][j] / limit + 1) / 2) }, groups.maps);
   }
   let d = '';
   for (let i = 0; i < f.length; i++) for (let j = 0; j < tEdges.length - 1; j++) {
@@ -115,12 +131,13 @@ function drawMap() {
     if (i === 0 || !corrected[i - 1][j]) d += `M${x0},${y0}H${x1}`;
     if (i === f.length - 1 || !corrected[i + 1][j]) d += `M${x0},${y1}H${x1}`;
   }
-  if (d) el('path', { d, class: 'outline' }, maps);
-  mapHead.textContent = `Total power, mean of ${data.n[state.region]} animals` + (d ? '; outline: corrected' : '; no corrected region');
+  if (d) el('path', { d, class: 'outline' }, groups.maps);
+  groups.mapHead.textContent = `Total power, mean of ${data.n[state.region]} animals` + (d ? '; outline: corrected' : '; no corrected region');
 }
 
 function drawWaves() {
-  waves.replaceChildren(); waveLegend.replaceChildren();
+  groups.waves.replaceChildren();
+  groups.waveLegend.replaceChildren();
   const [, , high, low] = data.contrasts[state.contrast];
   const a = state.hover ?? state.pinned, region = data.regions[state.region], t = data.trace.t;
   const own = a === null ? null : data.trace.animal[a][state.region];
@@ -132,35 +149,35 @@ function drawWaves() {
   const pad = 0.06 * (hi - lo); lo -= pad; hi += pad;
   const y = v => WAVE.bottom - (v - lo) / (hi - lo) * (WAVE.bottom - WAVE.top);
   const path = values => 'M' + values.map((v, i) => `${xWave(t[i]).toFixed(1)},${y(v).toFixed(1)}`).join('L');
-  el('rect', { x: xWave(T0), y: WAVE.top, width: xWave(0) - xWave(T0), height: WAVE.bottom - WAVE.top, fill: '#EAE5DA' }, waves);
-  if (lo < 0 && hi > 0) el('line', { x1: WAVE.left, x2: WAVE.right, y1: y(0), y2: y(0), class: 'zero' }, waves);
-  waveHead.textContent = own ? `${animalName(a)}, ${region}` : `Mean ± SE of ${data.n[state.region]} animals, ${region}`;
+  el('rect', { x: xWave(T0), y: WAVE.top, width: xWave(0) - xWave(T0), height: WAVE.bottom - WAVE.top, fill: '#EAE5DA' }, groups.waves);
+  if (lo < 0 && hi > 0) el('line', { x1: WAVE.left, x2: WAVE.right, y1: y(0), y2: y(0), class: 'zero' }, groups.waves);
+  groups.waveHead.textContent = own ? `${animalName(a)}, ${region}` : `Mean ± SE of ${data.n[state.region]} animals, ${region}`;
   pair.forEach((c, i) => {
     if (!own) {
       const upper = mean[c].map((v, k) => `${xWave(t[k]).toFixed(1)},${y(v + se[c][k]).toFixed(1)}`);
       const lower = mean[c].map((v, k) => `${xWave(t[k]).toFixed(1)},${y(v - se[c][k]).toFixed(1)}`).reverse();
-      el('path', { d: `M${upper.join('L')}L${lower.join('L')}Z`, fill: INTENSITY[c], opacity: 0.2 }, waves);
+      el('path', { d: `M${upper.join('L')}L${lower.join('L')}Z`, fill: INTENSITY[c], opacity: 0.2 }, groups.waves);
     }
-    el('path', { d: path(lines[i]), stroke: INTENSITY[c], 'stroke-width': 1.5, fill: 'none' }, waves);
+    el('path', { d: path(lines[i]), stroke: INTENSITY[c], 'stroke-width': 1.5, fill: 'none' }, groups.waves);
   });
-  el('path', { d: `M${WAVE.left},${WAVE.top}V${WAVE.bottom}H${WAVE.right}`, class: 'axis' }, waves);
+  el('path', { d: `M${WAVE.left},${WAVE.top}V${WAVE.bottom}H${WAVE.right}`, class: 'axis' }, groups.waves);
   const spacing = [5, 10, 20, 25, 50, 100, 200, 500].find(s => (hi - lo) / s <= 4);
-  for (let v = Math.ceil(lo / spacing) * spacing; v <= hi; v += spacing) text(waves, WAVE.left - 6, y(v) + 4, v, { 'text-anchor': 'end' });
-  text(waves, WAVE.left - 6, WAVE.top - 14, 'µV', { 'text-anchor': 'end' });
-  [-150, 0, 200, 400].forEach(v => text(waves, xWave(v), WAVE.bottom + 16, v, { 'text-anchor': 'middle' }));
-  text(waves, (WAVE.left + WAVE.right) / 2, WAVE.bottom + 32, 'Time from stimulation (ms)', { 'text-anchor': 'middle' });
+  for (let v = Math.ceil(lo / spacing) * spacing; v <= hi; v += spacing) text(groups.waves, WAVE.left - 6, y(v) + 4, v, { 'text-anchor': 'end' });
+  text(groups.waves, WAVE.left - 6, WAVE.top - 14, 'µV', { 'text-anchor': 'end' });
+  [-150, 0, 200, 400].forEach(v => text(groups.waves, xWave(v), WAVE.bottom + 16, v, { 'text-anchor': 'middle' }));
+  text(groups.waves, (WAVE.left + WAVE.right) / 2, WAVE.bottom + 32, 'Time from stimulation (ms)', { 'text-anchor': 'middle' });
   pair.forEach((c, i) => {
     const x = WAVE.right - 140 + i * 74;
-    el('line', { x1: x, x2: x + 16, y1: 39, y2: 39, stroke: INTENSITY[c], 'stroke-width': 2.5 }, waveLegend);
-    text(waveLegend, x + 21, 43, data.conditions[c].replace('x', '×'));
+    el('line', { x1: x, x2: x + 16, y1: 39, y2: 39, stroke: INTENSITY[c], 'stroke-width': 2.5 }, groups.waveLegend);
+    text(groups.waveLegend, x + 21, 43, data.conditions[c].replace('x', '×'));
   });
 }
 
 function highlight() {
   const a = state.hover ?? state.pinned;
-  svg.classList.toggle('focused', a !== null);
-  strips.querySelectorAll('[data-animal]').forEach(node => node.classList.toggle('active', Number(node.dataset.animal) === a));
-  strips.querySelectorAll('.animal-line.active, .animal-dot.active').forEach(node => node.parentNode.append(node));
+  left.classList.toggle('focused', a !== null);
+  groups.strips.querySelectorAll('[data-animal]').forEach(node => node.classList.toggle('active', Number(node.dataset.animal) === a));
+  groups.strips.querySelectorAll('.animal-line.active, .animal-dot.active').forEach(node => node.parentNode.append(node));
 }
 
 function describe() {
@@ -185,17 +202,17 @@ function update(redraw) {
   document.querySelectorAll('#contrasts button').forEach((b, i) => b.setAttribute('aria-pressed', String(i === state.contrast)));
 }
 
-svg.addEventListener('pointerover', event => {
+left.addEventListener('pointerover', event => {
   const a = event.target.dataset?.animal;
   if (a === undefined || Number(a) === state.hover) return;
   state.hover = Number(a); update(false);
 });
-svg.addEventListener('pointerout', event => {
+left.addEventListener('pointerout', event => {
   const a = event.target.dataset?.animal;
   if (a === undefined || event.relatedTarget?.dataset?.animal === a) return;
   state.hover = null; update(false);
 });
-svg.addEventListener('click', event => {
+left.addEventListener('click', event => {
   const a = event.target.dataset?.animal;
   state.pinned = a === undefined || Number(a) === state.pinned ? null : Number(a);
   state.hover = null; update(false);
@@ -222,7 +239,8 @@ const tabs = (id, labels, keyName) => {
 };
 tabs('regions', data.regions, 'region');
 tabs('contrasts', data.contrasts.map(c => c[1]), 'contrast');
-update(true);
+build();
+narrow.addEventListener('change', build);
 
 const FIGURES = [
   ['fig3_waveforms', 'Figure 3', 'Stimulation-locked waveforms'],
