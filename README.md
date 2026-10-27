@@ -6,7 +6,7 @@
 
 Analysis code, results and figures for our IASP 2026 poster and the accompanying article. We recorded S1, PFC and ACC simultaneously in 18 anaesthetised pigs while stimulating the ulnar nerve at 2, 10 and 20 times motor threshold, and asked which part of the cortical response follows stimulus intensity.
 
-**IASP 2026 World Congress on Pain · Bangkok · Poster 105, Thursday 29 October 2026**
+**IASP 2026 World Congress on Pain · Bangkok · Poster 105 (abstract 10418), Thursday 29 October 2026**
 
 ## Poster
 
@@ -16,7 +16,7 @@ Nickolaj Ajay Atchuthan, Christian Kruse Pedersen, Winnie Jensen and Suzan Meijs
 
 [Poster (PDF)](docs/poster.pdf) · [Interactive page](https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/)
 
-Poster 105 in poster session 6 (Thursday 29 October 2026, 15:15–16:45, Exhibit Hall EH102-103); submission 10418.
+Poster 105 in poster session 6 (Thursday 29 October 2026, 15:15–16:45, Exhibit Hall EH102-103); abstract 10418.
 
 The same code produces every result in the article *Graded peripheral nerve stimulation is associated with phase-locked cortical power increases in anaesthetised pigs* (in preparation).
 
