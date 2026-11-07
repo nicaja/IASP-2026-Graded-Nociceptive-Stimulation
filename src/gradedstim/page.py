@@ -1,7 +1,7 @@
 """Data for the interactive page (docs/data/page.json) and the animal-by-animal GIF, drawn from results/ only.
 
-The change in each animal is the paper's animal-level response (as in Supplementary Figure S7): the
-high-minus-low difference in log10 power within each sequence, averaged within animal.
+The change in each animal is the animal-level response used for the poster's correlation matrix: the
+high-minus-low difference within each sequence, averaged within animal.
 """
 
 from __future__ import annotations
@@ -18,7 +18,7 @@ import pandas as pd  # noqa: E402
 from matplotlib.animation import FuncAnimation, PillowWriter  # noqa: E402
 
 from .correlations import animal_differences  # noqa: E402
-from .figures import colour_limit, linear_edges, log_edges, remove_mains  # noqa: E402
+from .figures import remove_mains  # noqa: E402
 
 # The IASP 2026 poster palette.
 PAPER, INK, MUTED, FAINT, SHADE = "#F4F1EA", "#22211E", "#6B675F", "#ABA597", "#EAE5DA"
@@ -28,6 +28,10 @@ REGIONS = ("S1", "PFC", "ACC")
 CONDITIONS = ("2x MT", "10x MT", "20x MT")
 LABELS = {"10x-2x": "10× vs 2× MT", "20x-2x": "20× vs 2× MT", "20x-10x": "20× vs 10× MT"}
 RATIO_LIMITS = (0.75, 3.0)
+# The seven measures of the correlation matrix, as named on the poster, with the unit of their change.
+MEASURES = (("Total", "log10 power"), ("Evoked", "log10 power"), ("Induced", "log10 power"),
+            ("Evoked fraction", "fraction"), ("Aperiodic exponent", "exponent"), ("Aperiodic offset", "log10 power"),
+            ("Aperiodic-adj. power", "log10 power"))
 
 
 def load(results: Path, config: dict) -> dict:
@@ -40,9 +44,8 @@ def load(results: Path, config: dict) -> dict:
     usable = times.size // 4 * 4
     trace_ms = times[:usable].reshape(-1, 4).mean(axis=1) * 1000
     traces = traces[..., :usable].reshape(*traces.shape[:-1], -1, 4).mean(axis=-1)
-    with np.load(folder / "tfce_maps.npz") as tfce, np.load(folder / "animal_maps.npz") as animals:
-        effect, mask = tfce["effect"], tfce["mask"]
-        frequencies, map_ms = animals["frequencies"], animals["times"] * 1000
+    with np.load(folder / "correlations.npz") as source:
+        correlation = {k: source[k] for k in source.files}
     scalar = pd.read_csv(folder / "scalar_features.csv", dtype={"subject": str}, float_precision="round_trip")
     aperiodic = pd.read_csv(folder / "aperiodic_features.csv", dtype={"subject": str}, float_precision="round_trip")
     changes = animal_differences(scalar, aperiodic, config)
@@ -50,7 +53,7 @@ def load(results: Path, config: dict) -> dict:
     subjects = sorted(trace_subjects, key=int)
     order = [trace_subjects.index(s) for s in subjects]
     return {"subjects": subjects, "trace_ms": trace_ms, "traces": traces[order], "changes": changes,
-            "effect": effect, "mask": mask, "frequencies": frequencies, "map_ms": map_ms,
+            "correlation": correlation,
             "contrasts": pd.read_csv(folder / "contrasts.csv"), "design": config["design"]["contrasts"]}
 
 
@@ -76,6 +79,16 @@ def model_table(data: dict) -> dict:
             for contrast, _, _ in data["design"]}
 
 
+def correlation_table(source: dict) -> dict:
+    labels = [str(label) for label in source["labels"]]
+    assert labels == [f"{r} {m}" for r in REGIONS for m in ("Total", "Evoked", "Induced", "Evoked fraction",
+                                                             "Exponent", "Offset", "Adjusted power")]
+    return {"contrasts": [[str(c), LABELS[str(c)]] for c in source["contrasts"]],
+            "measures": [list(m) for m in MEASURES], "animals": [str(s) for s in source["subjects"]],
+            "rho": np.round(source["spearman"], 3).tolist(),
+            "change": np.round(np.moveaxis(source["animal_differences"], 1, 0), 5).tolist()}   # contrast, animal, measure
+
+
 def write_json(data: dict, target: Path) -> None:
     traces = data["traces"]
     n = np.isfinite(traces[:, 0, :, 0]).sum(axis=0)
@@ -91,11 +104,7 @@ def write_json(data: dict, target: Path) -> None:
                   "mean": np.round(np.moveaxis(np.nanmean(traces, axis=0), 1, 0), 2).tolist(),
                   "se": np.round(np.moveaxis(np.nanstd(traces, axis=0, ddof=1) / np.sqrt(n)[None, :, None], 1, 0),
                                  2).tolist()},
-        "map": {"f": np.round(data["frequencies"], 2).tolist(), "t": np.round(data["map_ms"], 1).tolist(),
-                "fEdges": np.round(log_edges(data["frequencies"]), 3).tolist(),
-                "tEdges": np.round(linear_edges(data["map_ms"]), 3).tolist(),
-                "effect": np.round(data["effect"], 4).tolist(), "mask": data["mask"].astype(int).tolist(),
-                "limit": colour_limit(data["effect"])},
+        "correlation": correlation_table(data["correlation"]),
     }
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(page, separators=(",", ":")), encoding="utf-8")
@@ -203,6 +212,6 @@ def write_gif(data: dict, target: Path, contrast: str = "20x-2x") -> None:
 
 def make(config: dict) -> None:
     data = load(config["paths"]["results"], config)
-    docs = config["paths"]["figures"].parent
+    docs = config["paths"]["docs"]
     write_json(data, docs / "data" / "page.json")
-    write_gif(data, config["paths"]["figures"] / "each-animal.gif")
+    write_gif(data, docs / "figures" / "each-animal.gif")

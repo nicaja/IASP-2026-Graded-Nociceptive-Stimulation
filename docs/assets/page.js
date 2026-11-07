@@ -1,14 +1,14 @@
-// Interactive figure: every animal's change in total, evoked and induced power, linked to its own waveforms.
+// Two interactive versions of poster figures: every animal behind Fig. 3, and the animals behind each cell of the
+// correlation matrix.
 const NS = 'http://www.w3.org/2000/svg';
 const INTENSITY = ['#D3A15F', '#B8582F', '#6E1F2B'];
 const COMPONENTS = [['total', 'Total', '#22211E'], ['evoked', 'Evoked', '#1F6F78'], ['induced', 'Induced', '#B58A55']];
-const STOPS = [[0, '#2E6F86'], [0.25, '#9DBDC6'], [0.5, '#F4F1EA'], [2 / 3, '#E2B48F'], [5 / 6, '#B8582F'], [1, '#6E1F2B']];
+const CORR_STOPS = [[0, '#1F5F6B'], [0.25, '#8DB5BA'], [0.5, '#F4F1EA'], [0.75, '#D9A27E'], [1, '#8E2F2A']];
 const RATIO = [0.75, 3];
-const TOP = 64, BOTTOM = 404;
-const WAVE = { left: 618, right: 950, top: 64, bottom: 214 };
-const MAP = { left: 618, right: 818, top: 288, bottom: 404 };
+const TOP = 64, BOTTOM = 400;
+const WAVE = { left: 618, right: 950, top: 64, bottom: 400 };
 const T0 = -150, T1 = 550;
-// The strip plot and the trace panel are separate SVGs in one coordinate space, so they can stack on phones.
+// Each figure is two SVGs in one coordinate space, side by side on wide screens and stacked on phones.
 const narrow = matchMedia('(max-width: 719px)');
 const stripLayout = () => narrow.matches
   ? { left: 70, right: 400, columns: [120, 235, 350], square: 42, view: '0 0 420 456' }
@@ -22,17 +22,21 @@ const el = (name, attrs = {}, parent) => {
 };
 const text = (parent, x, y, content, attrs = {}) => { const node = el('text', { x, y, ...attrs }, parent); node.textContent = content; return node; };
 const hex = h => [1, 3, 5].map(i => parseInt(h.slice(i, i + 2), 16));
-function colour(u) {
+function colour(u, stops) {
   u = Math.max(0, Math.min(1, u));
   let i = 0;
-  while (i < STOPS.length - 2 && u > STOPS[i + 1][0]) i++;
-  const [a, ca] = STOPS[i], [b, cb] = STOPS[i + 1], f = (u - a) / (b - a);
+  while (i < stops.length - 2 && u > stops[i + 1][0]) i++;
+  const [a, ca] = stops[i], [b, cb] = stops[i + 1], f = (u - a) / (b - a);
   const [x, y] = [hex(ca), hex(cb)];
   return `rgb(${x.map((v, k) => Math.round(v + f * (y[k] - v))).join(',')})`;
 }
 const times = r => `${r.toFixed(2)}×`;
+const minus = v => String(v).replace('-', '−');
+const niceStep = span => [0.001, 0.002, 0.005, 0.01, 0.02, 0.025, 0.05, 0.1, 0.2, 0.25, 0.5, 1, 2, 5].find(s => span / s <= 5) ?? 10;
 
 const data = await (await fetch('data/page.json')).json();
+
+// ---------------------------------------------------------------- each animal behind Fig. 3
 const left = document.getElementById('strip-plot');
 const right = document.getElementById('trace-plot');
 const readout = document.getElementById('readout');
@@ -43,8 +47,6 @@ const animalName = a => `Animal ${Number(data.animals[a])}`;
 
 const yRatio = r => BOTTOM - Math.log(Math.min(Math.max(r, RATIO[0]), RATIO[1]) / RATIO[0]) / Math.log(RATIO[1] / RATIO[0]) * (BOTTOM - TOP);
 const xWave = t => WAVE.left + (t - T0) / (T1 - T0) * (WAVE.right - WAVE.left);
-const xMap = t => MAP.left + t / 400 * (MAP.right - MAP.left);
-const yFreq = f => MAP.bottom - Math.log(f / 20) / Math.log(10) * (MAP.bottom - MAP.top);
 // Spread the animals sideways within a column by rank, so equal values do not hide each other.
 const spread = values => {
   const order = values.map((v, i) => [v, i]).filter(([v]) => v !== null).sort((a, b) => a[0] - b[0]);
@@ -65,22 +67,9 @@ function build() {
   [0.8, 1, 1.5, 2, 3].forEach(v => text(left, STRIP.left - 6, yRatio(v) + 4, v, { 'text-anchor': 'end' }));
   groups.strips = el('g', {}, left);
   groups.counts = el('g', {}, left);
-
   groups.waveHead = text(right, WAVE.left, 22, '', { class: 'head' });
   groups.waveLegend = el('g', {}, right);
   groups.waves = el('g', {}, right);
-  groups.mapHead = text(right, MAP.left, 274, '', { class: 'head' });
-  groups.maps = el('g', {}, right);
-  el('path', { d: `M${MAP.left},${MAP.top}V${MAP.bottom}H${MAP.right}`, class: 'axis' }, right);
-  [20, 50, 100, 200].forEach(f => text(right, MAP.left - 6, yFreq(f) + 4, f === 200 ? '200 Hz' : f, { 'text-anchor': 'end' }));
-  [0, 200, 400].forEach(v => text(right, xMap(v), MAP.bottom + 16, v, { 'text-anchor': 'middle' }));
-  text(right, (MAP.left + MAP.right) / 2, MAP.bottom + 34, 'Time (ms)', { 'text-anchor': 'middle' });
-  const step = (MAP.bottom - MAP.top) / 40;
-  for (let i = 0; i < 40; i++) el('rect', { x: 846, y: MAP.bottom - (i + 1) * step, width: 8, height: step + 0.5, fill: colour(i / 39) }, right);
-  text(right, 860, MAP.top + 8, `+${data.map.limit}`);
-  text(right, 860, (MAP.top + MAP.bottom) / 2 + 4, '0');
-  text(right, 860, MAP.bottom, `−${data.map.limit}`);
-  text(right, 846, MAP.bottom + 16, 'log10 power');
   update(true);
 }
 
@@ -113,28 +102,6 @@ function drawStrips() {
   });
 }
 
-function drawMap() {
-  groups.maps.replaceChildren();
-  const { f, fEdges, tEdges, effect, mask, limit } = data.map;
-  const values = effect[state.contrast][state.region], corrected = mask[state.contrast][state.region];
-  const yEdge = fEdges.map(v => yFreq(Math.min(200, Math.max(20, v))));
-  for (let i = 0; i < f.length; i++) for (let j = 0; j < tEdges.length - 1; j++) {
-    el('rect', { x: xMap(tEdges[j]).toFixed(2), y: yEdge[i + 1].toFixed(2), width: (xMap(tEdges[j + 1]) - xMap(tEdges[j]) + 0.4).toFixed(2),
-      height: (yEdge[i] - yEdge[i + 1] + 0.4).toFixed(2), fill: colour((values[i][j] / limit + 1) / 2) }, groups.maps);
-  }
-  let d = '';
-  for (let i = 0; i < f.length; i++) for (let j = 0; j < tEdges.length - 1; j++) {
-    if (!corrected[i][j]) continue;
-    const [x0, x1, y0, y1] = [xMap(tEdges[j]), xMap(tEdges[j + 1]), yEdge[i], yEdge[i + 1]];
-    if (j === 0 || !corrected[i][j - 1]) d += `M${x0},${y0}V${y1}`;
-    if (j === tEdges.length - 2 || !corrected[i][j + 1]) d += `M${x1},${y0}V${y1}`;
-    if (i === 0 || !corrected[i - 1][j]) d += `M${x0},${y0}H${x1}`;
-    if (i === f.length - 1 || !corrected[i + 1][j]) d += `M${x0},${y1}H${x1}`;
-  }
-  if (d) el('path', { d, class: 'outline' }, groups.maps);
-  groups.mapHead.textContent = `Total power, mean of ${data.n[state.region]} animals` + (d ? '; outline: corrected' : '; no corrected region');
-}
-
 function drawWaves() {
   groups.waves.replaceChildren();
   groups.waveLegend.replaceChildren();
@@ -161,11 +128,11 @@ function drawWaves() {
     el('path', { d: path(lines[i]), stroke: INTENSITY[c], 'stroke-width': 1.5, fill: 'none' }, groups.waves);
   });
   el('path', { d: `M${WAVE.left},${WAVE.top}V${WAVE.bottom}H${WAVE.right}`, class: 'axis' }, groups.waves);
-  const spacing = [5, 10, 20, 25, 50, 100, 200, 500].find(s => (hi - lo) / s <= 4);
-  for (let v = Math.ceil(lo / spacing) * spacing; v <= hi; v += spacing) text(groups.waves, WAVE.left - 6, y(v) + 4, v, { 'text-anchor': 'end' });
+  const spacing = [5, 10, 20, 25, 50, 100, 200, 500].find(s => (hi - lo) / s <= 5);
+  for (let v = Math.ceil(lo / spacing) * spacing; v <= hi; v += spacing) text(groups.waves, WAVE.left - 6, y(v) + 4, minus(v), { 'text-anchor': 'end' });
   text(groups.waves, WAVE.left - 6, WAVE.top - 14, 'µV', { 'text-anchor': 'end' });
-  [-150, 0, 200, 400].forEach(v => text(groups.waves, xWave(v), WAVE.bottom + 16, v, { 'text-anchor': 'middle' }));
-  text(groups.waves, (WAVE.left + WAVE.right) / 2, WAVE.bottom + 32, 'Time from stimulation (ms)', { 'text-anchor': 'middle' });
+  [-150, 0, 200, 400].forEach(v => text(groups.waves, xWave(v), WAVE.bottom + 16, minus(v), { 'text-anchor': 'middle' }));
+  text(groups.waves, (WAVE.left + WAVE.right) / 2, WAVE.bottom + 34, 'Time from stimulation (ms)', { 'text-anchor': 'middle' });
   pair.forEach((c, i) => {
     const x = WAVE.right - 140 + i * 74;
     el('line', { x1: x, x2: x + 16, y1: 39, y2: 39, stroke: INTENSITY[c], 'stroke-width': 2.5 }, groups.waveLegend);
@@ -189,14 +156,13 @@ function describe() {
     return;
   }
   const change = data.change[key][region];
-  readout.textContent = change.total[a] === null ? `${animalName(a)}: no ${region} recording after quality control`
-    : `${animalName(a)}, ${region}, ${label}: ` + COMPONENTS.map(([k, name]) => `${name.toLowerCase()} ${times(10 ** change[k][a])}`).join(', ');
+  readout.textContent = `${animalName(a)}, ${region}, ${label}: ` + COMPONENTS.map(([k, name]) => `${name.toLowerCase()} ${times(10 ** change[k][a])}`).join(', ');
 }
 
 function update(redraw) {
   const total = data.change[data.contrasts[state.contrast][0]][data.regions[state.region]].total;
   if (state.pinned !== null && total[state.pinned] === null) state.pinned = null;
-  if (redraw) { drawStrips(); drawMap(); }
+  if (redraw) drawStrips();
   highlight(); drawWaves(); describe();
   document.querySelectorAll('#regions button').forEach((b, i) => b.setAttribute('aria-pressed', String(i === state.region)));
   document.querySelectorAll('#contrasts button').forEach((b, i) => b.setAttribute('aria-pressed', String(i === state.contrast)));
@@ -229,35 +195,100 @@ document.getElementById('previous').addEventListener('click', () => step(-1));
 document.getElementById('next').addEventListener('click', () => step(1));
 document.getElementById('all').addEventListener('click', () => { state.pinned = null; state.hover = null; update(false); });
 
-const tabs = (id, labels, keyName) => {
+const tabs = (id, labels, onPick) => {
   const group = document.getElementById(id);
   labels.forEach((label, i) => {
     const button = Object.assign(document.createElement('button'), { type: 'button', textContent: label });
-    button.addEventListener('click', () => { state[keyName] = i; state.hover = null; update(true); });
+    button.addEventListener('click', () => onPick(i));
     group.append(button);
   });
 };
-tabs('regions', data.regions, 'region');
-tabs('contrasts', data.contrasts.map(c => c[1]), 'contrast');
+tabs('regions', data.regions, i => { state.region = i; state.hover = null; update(true); });
+tabs('contrasts', data.contrasts.map(c => c[1]), i => { state.contrast = i; state.hover = null; update(true); });
 build();
 narrow.addEventListener('change', build);
 
-const FIGURES = [
-  ['fig3_waveforms', 'Figure 3', 'Stimulation-locked waveforms'],
-  ['fig4_power_ratios', 'Figure 4', 'Total, evoked and induced power ratios'],
-  ['fig5_corrected_maps', 'Figure 5', 'Corrected total-power maps'],
-  ['fig6_aperiodic', 'Figure 6', 'Aperiodic exponent, offset and adjusted power'],
-  ['figS1_fraction_common_scale', 'Figure S1', 'Phase-locked fraction of total power'],
-  ['figS2_fraction_region_scales', 'Figure S2', 'Phase-locked fraction, region scales'],
-  ['figS3_all_maps', 'Figure S3', 'All nine corrected maps'],
-  ['figS4_individual_waveforms', 'Figure S4', 'Waveforms of every animal'],
-  ['figS5_evoked_fraction', 'Figure S5', 'Evoked-fraction contrasts'],
-  ['figS6_spectra', 'Figure S6', 'Static spectra and aperiodic fits'],
-  ['figS7_correlations', 'Figure S7', 'Correlations between animal-level responses'],
-];
-const gallery = document.getElementById('gallery');
-for (const [stem, number, title] of FIGURES) {
-  const link = Object.assign(document.createElement('a'), { href: `figures/${stem}.pdf` });
-  link.innerHTML = `<img src="figures/${stem}.png" alt="${number}: ${title}" loading="lazy"><span><b>${number}.</b> ${title}</span>`;
-  gallery.append(link);
+// ---------------------------------------------------------------- correlation matrix with the animals behind each cell
+const corr = data.correlation;
+const matrix = document.getElementById('matrix-plot');
+const scatter = document.getElementById('scatter-plot');
+const N = corr.measures.length * data.regions.length;
+const CELL = 17, GAP = 5, X0 = 172, Y0 = 34;
+const cellPos = i => i * CELL + Math.floor(i / corr.measures.length) * GAP;
+const measureName = i => `${data.regions[Math.floor(i / corr.measures.length)]} ${corr.measures[i % corr.measures.length][0]}`;
+const cstate = { contrast: 1, pinned: [2, 0], hover: null };
+
+function buildMatrix() {
+  matrix.replaceChildren();
+  const span = cellPos(N - 1) + CELL;
+  for (let i = 0; i < N; i++) {
+    text(matrix, X0 - 6, Y0 + cellPos(i) + CELL / 2 + 4, corr.measures[i % corr.measures.length][0], { 'text-anchor': 'end' });
+    const x = X0 + cellPos(i) + CELL / 2 + 4, y = Y0 + span + 8;
+    text(matrix, x, y, corr.measures[i % corr.measures.length][0], { 'text-anchor': 'end', transform: `rotate(-90 ${x} ${y})` });
+  }
+  data.regions.forEach((region, g) => {
+    const middle = cellPos(g * corr.measures.length) + (corr.measures.length * CELL) / 2;
+    text(matrix, 14, Y0 + middle + 5, region, { class: 'region' });
+    text(matrix, X0 + middle, Y0 + span + 152, region, { class: 'region', 'text-anchor': 'middle' });
+  });
+  const key = el('g', {}, matrix), kx = X0 + span - 170, ky = Y0 + 6;
+  for (let i = 0; i < 60; i++) el('rect', { x: kx + i * 2.5, y: ky + 18, width: 2.8, height: 9, fill: colour(i / 59, CORR_STOPS) }, key);
+  text(key, kx, ky + 8, 'Spearman ρ across animals', { class: 'head' });
+  [[-1, '−1'], [0, '0'], [1, '1']].forEach(([v, label]) => text(key, kx + (v + 1) / 2 * 150, ky + 42, label, { 'text-anchor': 'middle' }));
+  matrix.cells = el('g', {}, matrix);
+  matrix.marker = el('rect', { width: CELL, height: CELL, class: 'cell-marker' }, matrix);
+  drawMatrix();
 }
+
+function drawMatrix() {
+  matrix.cells.replaceChildren();
+  const rho = corr.rho[cstate.contrast];
+  for (let r = 0; r < N; r++) for (let c = 0; c <= r; c++) {
+    el('rect', { x: X0 + cellPos(c), y: Y0 + cellPos(r), width: CELL - 1, height: CELL - 1, fill: colour((rho[r][c] + 1) / 2, CORR_STOPS),
+      class: 'cell', 'data-row': r, 'data-col': c }, matrix.cells);
+  }
+  drawScatter();
+}
+
+function drawScatter() {
+  const [r, c] = cstate.hover ?? cstate.pinned;
+  matrix.marker.setAttribute('x', X0 + cellPos(c) - 0.5);
+  matrix.marker.setAttribute('y', Y0 + cellPos(r) - 0.5);
+  scatter.replaceChildren();
+  const values = corr.change[cstate.contrast], rho = corr.rho[cstate.contrast][r][c];
+  const xs = values.map(v => v[c]), ys = values.map(v => v[r]);
+  const box = { left: 640, right: 940, top: 92, bottom: 392 };
+  const range = list => { let lo = Math.min(0, ...list), hi = Math.max(0, ...list); const pad = 0.08 * (hi - lo || 1); return [lo - pad, hi + pad]; };
+  const [xlo, xhi] = range(xs), [ylo, yhi] = range(ys);
+  const sx = v => box.left + (v - xlo) / (xhi - xlo) * (box.right - box.left);
+  const sy = v => box.bottom - (v - ylo) / (yhi - ylo) * (box.bottom - box.top);
+  const label = corr.contrasts[cstate.contrast][1];
+  text(scatter, box.left - 50, 22, r === c ? measureName(r) : `${measureName(r)} and ${measureName(c)}`, { class: 'head-ink' });
+  text(scatter, box.left - 50, 44, `ρ = ${minus(rho.toFixed(2))} across ${values.length} animals, changes ${label.replace(' vs ', ' − ')}`, { class: 'head' });
+  el('line', { x1: sx(0), x2: sx(0), y1: box.top, y2: box.bottom, class: 'unity' }, scatter);
+  el('line', { x1: box.left, x2: box.right, y1: sy(0), y2: sy(0), class: 'unity' }, scatter);
+  el('path', { d: `M${box.left},${box.top}V${box.bottom}H${box.right}`, class: 'axis' }, scatter);
+  const xstep = niceStep(xhi - xlo), ystep = niceStep(yhi - ylo);
+  const fmt = (v, step) => minus(Number(v.toFixed(Math.max(0, -Math.floor(Math.log10(step)) + 1))).toString());
+  for (let v = Math.ceil(xlo / xstep) * xstep; v <= xhi; v += xstep) text(scatter, sx(v), box.bottom + 16, fmt(v, xstep), { 'text-anchor': 'middle' });
+  for (let v = Math.ceil(ylo / ystep) * ystep; v <= yhi; v += ystep) text(scatter, box.left - 6, sy(v) + 4, fmt(v, ystep), { 'text-anchor': 'end' });
+  const unit = i => corr.measures[i % corr.measures.length][1];
+  text(scatter, (box.left + box.right) / 2, box.bottom + 36, `${measureName(c)}, change (${unit(c)})`, { 'text-anchor': 'middle' });
+  const ly = (box.top + box.bottom) / 2;
+  text(scatter, box.left - 46, ly, `${measureName(r)}, change (${unit(r)})`, { 'text-anchor': 'middle', transform: `rotate(-90 ${box.left - 46} ${ly})` });
+  const name = el('text', { class: 'dot-label' }, scatter);
+  values.forEach((_, a) => {
+    const dot = el('circle', { cx: sx(xs[a]), cy: sy(ys[a]), r: 4.5, class: 'scatter-dot' }, scatter);
+    dot.append(Object.assign(document.createElementNS(NS, 'title'), { textContent: `Animal ${Number(corr.animals[a])}` }));
+    dot.addEventListener('pointerover', () => { name.textContent = `Animal ${Number(corr.animals[a])}`; name.setAttribute('x', sx(xs[a]) + 8); name.setAttribute('y', sy(ys[a]) - 8); });
+    dot.addEventListener('pointerout', () => { name.textContent = ''; });
+  });
+  document.querySelectorAll('#corr-contrasts button').forEach((b, i) => b.setAttribute('aria-pressed', String(i === cstate.contrast)));
+}
+
+const cellOf = target => target.classList?.contains('cell') ? [Number(target.dataset.row), Number(target.dataset.col)] : null;
+matrix.addEventListener('pointerover', event => { const cell = cellOf(event.target); if (cell) { cstate.hover = cell; drawScatter(); } });
+matrix.addEventListener('pointerleave', () => { cstate.hover = null; drawScatter(); });
+matrix.addEventListener('click', event => { const cell = cellOf(event.target); if (cell) { cstate.pinned = cell; cstate.hover = null; drawScatter(); } });
+tabs('corr-contrasts', corr.contrasts.map(c => c[1]), i => { cstate.contrast = i; drawMatrix(); });
+buildMatrix();

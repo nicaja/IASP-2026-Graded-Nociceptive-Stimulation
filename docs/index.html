@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Temporal and Spectral Signatures of Graded Nociceptive Stimulation Across S1, PFC, and ACC</title>
-  <meta name="description" content="IASP 2026 poster 105: cortical responses to graded ulnar-nerve stimulation recorded simultaneously in S1, PFC and ACC of anaesthetised pigs, with an interactive figure.">
+  <meta name="description" content="IASP 2026 poster 105: cortical responses to graded ulnar-nerve stimulation recorded simultaneously in S1, PFC and ACC of anaesthetised pigs, with the poster’s figures and interactive versions of two of them.">
   <meta name="color-scheme" content="light">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' rx='3' fill='%23F4F1EA'/%3E%3Crect x='3' y='9' width='2.5' height='4' fill='%23D3A15F'/%3E%3Crect x='6.75' y='6' width='2.5' height='7' fill='%23B8582F'/%3E%3Crect x='10.5' y='3' width='2.5' height='10' fill='%236E1F2B'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="assets/page.css">
@@ -37,58 +37,85 @@
       </div>
     </section>
 
-    <section aria-labelledby="explorer-title">
-      <h2 id="explorer-title">How each animal's power changed</h2>
-      <div class="controls">
-        <div class="tabs" role="group" aria-label="Region" id="regions"></div>
-        <div class="tabs" role="group" aria-label="Contrast" id="contrasts"></div>
-      </div>
-      <div class="figure">
-        <svg id="strip-plot" class="plot" viewBox="0 0 560 456" role="img" aria-label="For the selected region and contrast: each animal's ratio of total, evoked and induced power between the two intensities, beside the model estimate."></svg>
-        <svg id="trace-plot" class="plot" viewBox="570 0 390 456" role="img" aria-label="Waveforms of the selected animal or the mean of all animals, and the total-power difference map for the selected contrast."></svg>
-      </div>
-      <div class="controls stepper">
-        <button type="button" id="previous" class="pill">‹ Previous animal</button>
-        <button type="button" id="next" class="pill">Next animal ›</button>
-        <button type="button" id="all" class="pill">All animals</button>
-        <span class="readout" id="readout" aria-live="polite"></span>
-      </div>
-      <p class="caption">One dot per animal: its change between the two intensities, averaged over its stimulation sequences, with a line joining the same animal across total, evoked and induced power. Squares are the mixed-model estimates with 95% confidence intervals, filled where Holm-adjusted P &lt; 0.05. Hover over or click an animal to see its own waveforms; ratios above 3 are drawn as triangles at the top.</p>
-    </section>
+    <figure class="poster-figure pair">
+      <a href="figures/poster-fig1a-recording-sites.png"><span class="panel">A</span><img src="figures/poster-fig1a-recording-sites.png" width="2220" height="1350" alt="Dorsal view of the pig brain with the micro-ECoG arrays over S1 and PFC and the ACC entry point near the midline, and a medial view of the left hemisphere with the depth array reaching the anterior cingulate target 10 to 14 mm below the cortical entry."></a>
+      <a href="figures/poster-fig1b-stimulation.png"><span class="panel">B</span><img src="figures/poster-fig1b-stimulation.png" width="1704" height="1212" alt="The right forelimb with the ulnar, median and radial nerves, and the exposed ulnar nerve with two stimulation wires beneath it."></a>
+      <figcaption>Fig. 1. Recording sites (A) and ulnar-nerve stimulation (B).</figcaption>
+    </figure>
 
-    <section aria-labelledby="findings-title">
-      <h2 id="findings-title">Findings</h2>
-      <div class="findings">
-        <article>
-          <p class="label">Waveforms</p>
-          <h3>All three regions showed a stimulation-locked response</h3>
-          <p>Animal-averaged waveforms at 2×, 10× and 20× MT are in Figure 3 and the waveforms of every animal in Figure S4.</p>
-        </article>
-        <article>
-          <p class="label">Power components</p>
-          <h3>Evoked power was higher at 10× and 20× than at 2× MT in all three regions</h3>
-          <p>At 20× MT, evoked power was 1.25 times the 2× MT value in S1 and PFC and 1.75 times in ACC; all six 10× and 20× vs 2× contrasts had Holm P ≤ 0.005. Evoked power was also higher at 20× than at 10× MT in PFC and ACC. No total- or induced-power contrast survived correction (Figure 4).</p>
-        </article>
-        <article>
-          <p class="label">Time–frequency maps</p>
-          <h3>Corrected total-power differences appeared within ~160 ms in S1 and ACC</h3>
-          <p>Four of the nine maps survived correction: 10× and 20× vs 2× MT in S1 and ACC. Differences were largest at 20–30 Hz, 85–105 ms after stimulation; at 20× vs 2× MT the ACC cluster extended to ~160 Hz. No map survived in PFC or for 20× vs 10× MT (Figure 5).</p>
-        </article>
-        <article>
-          <p class="label">Conclusions</p>
-          <h3>Separating the response components revealed effects a broad power average did not</h3>
-          <p>Cortical measures of nociception should state their response component and recording site. Recorded under general anaesthesia, these responses capture cortical nociceptive processing. Electrical nerve stimulation bypasses peripheral receptors, so responses to natural noxious stimuli may differ, and all animals were female.</p>
-        </article>
-      </div>
-    </section>
+    <section aria-labelledby="results-title">
+      <h2 id="results-title">Results</h2>
 
-    <section aria-labelledby="figures-title">
-      <h2 id="figures-title">Figures of the accompanying article</h2>
-      <div class="gallery" id="gallery"></div>
+      <article class="result">
+        <p class="label">Waveforms</p>
+        <h3>All three regions showed a stimulation-locked response</h3>
+        <figure class="poster-figure">
+          <p class="legend"><span style="--c:#D3A15F">2× MT</span><span style="--c:#B8582F">10× MT</span><span style="--c:#6E1F2B">20× MT</span></p>
+          <a href="figures/poster-fig2-waveforms.svg"><img src="figures/poster-fig2-waveforms.svg" alt="Stimulation-locked waveforms in S1, PFC and ACC at 2, 10 and 20 times motor threshold, from 150 ms before to 550 ms after stimulation."></a>
+          <figcaption>Fig. 2. Mean ± SE across animals.</figcaption>
+        </figure>
+      </article>
+
+      <article class="result">
+        <p class="label">Power components</p>
+        <h3>Evoked (phase-locked) power was higher at 10× and 20× than at 2× MT in all three regions</h3>
+        <p>At 20× MT, evoked power was 1.25 times the 2× MT value in S1 and PFC and 1.75 times in ACC; all six 10× and 20× vs 2× contrasts had Holm P ≤ 0.005. Evoked power was also higher at 20× than at 10× MT in PFC and ACC. No total- or induced-power contrast survived correction.</p>
+        <figure class="poster-figure">
+          <a href="figures/poster-fig3-power-components.svg"><img src="figures/poster-fig3-power-components.svg" alt="Power ratios between intensities for total, evoked and induced power in each region and contrast, with 95% confidence intervals."></a>
+          <figcaption>Fig. 3. Total: mean single-trial power. Evoked: power of the average waveform (phase-locked). Induced: total minus evoked (non-phase-locked). Lines: 95% confidence intervals; filled markers: significant after Holm correction.</figcaption>
+        </figure>
+
+        <h4 id="explorer-title">Each animal behind Fig. 3</h4>
+        <div class="controls">
+          <div class="tabs" role="group" aria-label="Region" id="regions"></div>
+          <div class="tabs" role="group" aria-label="Contrast" id="contrasts"></div>
+        </div>
+        <div class="figure">
+          <svg id="strip-plot" class="plot" viewBox="0 0 560 456" role="img" aria-label="For the selected region and contrast: each animal's ratio of total, evoked and induced power between the two intensities, beside the model estimate."></svg>
+          <svg id="trace-plot" class="plot" viewBox="570 0 390 456" role="img" aria-label="Waveforms of the selected animal, or the mean of all animals, at the two intensities."></svg>
+        </div>
+        <div class="controls stepper">
+          <button type="button" id="previous" class="pill">‹ Previous animal</button>
+          <button type="button" id="next" class="pill">Next animal ›</button>
+          <button type="button" id="all" class="pill">All animals</button>
+          <span class="readout" id="readout" aria-live="polite"></span>
+        </div>
+        <p class="caption">One dot per animal: its change between the two intensities, averaged over its stimulation sequences, with a line joining the same animal across total, evoked and induced power. Squares are the estimates of Fig. 3. Hover over or click an animal to see its own waveforms; ratios above 3 are drawn as triangles at the top.</p>
+      </article>
+
+      <article class="result">
+        <p class="label">Time–frequency maps</p>
+        <h3>Corrected total-power differences appeared within ~160 ms in S1 and ACC</h3>
+        <p>Four of the nine total-power maps survived correction: 10× and 20× vs 2× MT in S1 and ACC. Differences were largest at 20–30 Hz, 85–105 ms after stimulation; at 20× vs 2× MT the ACC cluster extended to ~160 Hz. No map survived in PFC or for 20× vs 10× MT.</p>
+        <figure class="poster-figure">
+          <a href="figures/poster-fig4-maps.svg"><img src="figures/poster-fig4-maps.svg" alt="Total-power difference maps from 20 to 200 Hz and 0 to 400 ms for each region at 10 and 20 times versus 2 times motor threshold, with outlines around the corrected regions."></a>
+          <figcaption>Fig. 4. Mean within-animal difference in total power, 20–200 Hz over the first 400 ms after stimulation.</figcaption>
+        </figure>
+      </article>
+
+      <article class="result">
+        <p class="label">Correlations</p>
+        <h3>Total and induced power changed together within each region</h3>
+        <p>Evoked changes co-varied between regions (ρ 0.45–0.62 from 2× to 20× MT). A steeper PFC or ACC exponent went with smaller power changes (blue; ρ −0.3 to −0.8).</p>
+        <div class="controls">
+          <div class="tabs" role="group" aria-label="Contrast" id="corr-contrasts"></div>
+        </div>
+        <div class="figure">
+          <svg id="matrix-plot" class="plot" viewBox="0 0 560 570" role="img" aria-label="Lower triangle of Spearman correlations between the changes of 21 measures, seven per region, across 17 animals."></svg>
+          <svg id="scatter-plot" class="plot" viewBox="570 0 390 570" role="img" aria-label="The 17 animals' changes in the two measures of the selected cell."></svg>
+        </div>
+        <p class="caption">Each cell: how two measures’ changes between the intensities co-vary across the 17 animals with data in all three regions (Spearman ρ, computed on ranks); the diagonal is each measure with itself. Hover over or click a cell to see the animals behind it. Exponent and offset: slope and level of the background spectrum; aperiodic-adjusted power: 35–120 Hz power above it.</p>
+      </article>
+
+      <article class="result">
+        <p class="label">Conclusions</p>
+        <h3>Separating the response components revealed intensity effects that a broad power average did not</h3>
+        <p>Graded ulnar-nerve stimulation increased phase-locked (evoked) power in S1, PFC and ACC, and corrected time–frequency maps localised early total-power differences in S1 and ACC. Cortical measures of nociception should state their response component and recording site. Recorded under general anaesthesia, these responses capture cortical nociceptive processing. Electrical nerve stimulation bypasses peripheral receptors, so responses to natural noxious stimuli may differ, and all animals were female.</p>
+      </article>
     </section>
 
     <footer>
-      <p>Every number and panel on this page comes from <code>results/</code> in the repository, written by the code there. The recordings are available from the corresponding author on reasonable request.</p>
+      <p>The figures are the poster’s; every number in them and in the interactive figures comes from <code>results/</code> in the repository. The recordings are available from the corresponding author on reasonable request.</p>
     </footer>
   </main>
   <script type="module" src="assets/page.js"></script>

@@ -4,8 +4,9 @@
 # Cleaned 96-channel epochs (BIDS derivative); see preprocessing/README.md.
 epochs = "data/derivatives/decim2000_0.5Hz_tmin-0.2_tmax1__combined_quality_copy_v2"
 work = "work"          # per-recording feature files (large, not committed)
-results = "results"    # tables and maps (committed)
-figures = "docs/figures"
+results = "results"    # numbers behind every figure and table (committed)
+figures = "figures"    # the article's figures (kept local until the article is published)
+docs = "docs"          # the GitHub Pages site
 
 [design]
 conditions = ["2x MT", "10x MT", "20x MT"]

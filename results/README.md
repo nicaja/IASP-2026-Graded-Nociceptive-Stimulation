@@ -1,7 +1,7 @@
 # Results
 
-Every number in the figures, tables and the interactive page comes from these files. `primary/` is the
-reported analysis; the other three folders are the sensitivity analyses of Supplementary Table S6
+Every number in the poster's figures, the interactive page and the article comes from these files. `primary/` is the
+reported analysis; the other three folders are the article's sensitivity analyses
 (`with_copies`: stored repaired channels averaged as they are; `with_animal13_acc`: animal 13's ACC
 recordings put back; `with_copies_and_animal13_acc`: both). Each folder holds the same files.
 
@@ -15,7 +15,7 @@ recordings put back; `with_copies_and_animal13_acc`: both). Each folder holds th
 | `maximum_maps.npz` | The sensitivity procedure: observed `statistic` (t per bin), `p_global`, and the 4096 `null_maximum` values |
 | `map_tests.csv` | One row per map: smallest corrected P and number of surviving bins under each procedure (`tfce_p`, `tfce_bins`, `maximum_p`, `maximum_bins`) and the map's `mean_effect` |
 | `figure_data.npz` (primary only) | Animal-level averages for the descriptive figures: `traces` (animals × intensities × regions × samples, µV), `fraction_maps`, `spectrum_observed` and `spectrum_background` (log10), with their time and frequency axes and `subjects` |
-| `correlations.npz` (primary only) | Figure S7: Spearman correlations (`spearman`, 2 contrasts × 21 × 21 measures), their `labels`, the `animal_differences` behind them and the 17 `subjects` with data in all three regions |
+| `correlations.npz` (primary only) | The poster's correlation matrix: Spearman correlations (`spearman`, 2 contrasts × 21 × 21 measures), their `labels`, the `animal_differences` behind them and the 17 `subjects` with data in all three regions |
 
-`tables/` holds Supplementary Tables S1–S6 as LaTeX (S5 and S6 also as CSV), and `software_versions.json`
-the package versions of the run.
+`software_versions.json` lists the package versions of the run. The `statistics` stage also writes the
+article's supplementary tables to `tables/` (kept out of the repository until the article is published).
