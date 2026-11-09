@@ -4,7 +4,7 @@
 
 *One animal at a time: its waveforms at 2× and 20× motor threshold (MT) and its power ratio, one dot per animal. Evoked power was higher at 20× MT in 14 of 18 animals in S1, 17 of 18 in PFC and 17 of 17 in ACC. [Interactive version](https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/)*
 
-Analysis code, results and the poster's figures for our IASP 2026 poster and the accompanying article. We recorded S1, PFC and ACC simultaneously in 18 anaesthetised pigs while stimulating the ulnar nerve at 2, 10 and 20 times motor threshold, and asked which part of the cortical response follows stimulus intensity.
+Analysis code, results and the poster's figures for our IASP 2026 poster and the accompanying article. We recorded the primary somatosensory cortex (S1), prefrontal cortex (PFC) and anterior cingulate cortex (ACC) simultaneously in 18 anaesthetised pigs while stimulating the ulnar nerve at 2, 10 and 20 times motor threshold, and asked which part of the cortical response follows stimulus intensity.
 
 **IASP 2026 World Congress on Pain · Bangkok · Poster 105 (abstract 10418), Thursday 29 October 2026**
 
@@ -22,13 +22,13 @@ The same code produces every result in the article *Graded peripheral nerve stim
 
 ## What we found
 
-Micro-ECoG arrays recorded S1 and PFC and a depth array the ACC (17 animals after quality control) over 154 stimulation sequences. Power at 35–120 Hz over 0–400 ms was compared between intensities with mixed models (animal random effects, Holm correction), and 20–200 Hz time–frequency maps with TFCE.
+Micro-ECoG arrays (surface electrode grids) recorded S1 and PFC, and a depth array the ACC (17 animals after quality control), over 154 stimulation sequences, each a run at all three intensities. Power at 35–120 Hz over 0–400 ms was compared between intensities with mixed models (animal random effects, Holm correction), and 20–200 Hz time–frequency maps with threshold-free cluster enhancement (TFCE).
 
 - Evoked (phase-locked) power was higher at 10× and 20× than at 2× MT in all three regions. At 20× MT it was 1.25 times the 2× MT value in S1 and PFC and 1.75 times in ACC (Holm P ≤ 0.005 for all six contrasts against 2× MT). It was also higher at 20× than at 10× MT in PFC and ACC.
 - No total- or induced-power contrast survived correction.
 - Four of the nine total-power maps survived correction: 10× and 20× vs 2× MT in S1 and ACC, within about 160 ms of stimulation. Differences were largest at 20–30 Hz, 85–105 ms after stimulation; at 20× vs 2× MT the ACC cluster extended to about 160 Hz.
 
-Separating the response components revealed intensity effects that a broad power average did not, so cortical measures of nociception should state their response component and recording site. Electrical nerve stimulation bypasses peripheral receptors, so responses to natural noxious stimuli may differ, and all animals were female.
+Separating the response components revealed intensity effects that a broad power average did not, so cortical measures of nociception should state their response component and recording site. Electrical nerve stimulation bypasses peripheral receptors, so responses to natural noxious stimuli may differ, and all animals were female, so sex differences could not be assessed.
 
 ![Total, evoked and induced power ratios for every region and contrast](docs/figures/poster-fig3-power-components.svg)
 
@@ -38,7 +38,7 @@ Separating the response components revealed intensity effects that a broad power
 
 The [page](https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/) shows the poster's text and figures, with interactive versions of two of them:
 
-- Behind Fig. 3, every animal's change in total, evoked and induced power for any region and contrast, beside the mixed-model estimate. Choosing an animal shows its own waveforms.
+- Behind Fig. 3, every animal's change in total, evoked and induced power for any region and contrast, beside the mixed-model estimate. Each animal's change is the difference between the two intensities within each sequence, averaged within the animal. Choosing an animal shows its own waveforms.
 - The correlation matrix: hovering over a cell plots the 17 animals behind that correlation.
 
 | Figure | Shows |
@@ -48,7 +48,7 @@ The [page](https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/) s
 | [Fig. 3](docs/figures/poster-fig3-power-components.svg) | Total, evoked and induced power ratios |
 | [Fig. 4](docs/figures/poster-fig4-maps.svg) | Total-power maps with their corrected regions |
 
-Each animal's change is the difference between the two intensities within each sequence, averaged within the animal. `python -m gradedstim page` writes the page's data and the GIF above from `results/`. The article's own figures and supplementary tables will be added here once it is published.
+`python -m gradedstim page` writes the page's data and the GIF above from `results/`. The article's own figures and supplementary tables will be added here once it is published.
 
 ## Code
 

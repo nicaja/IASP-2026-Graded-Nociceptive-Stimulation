@@ -16,7 +16,7 @@
       <h1>Temporal and Spectral Signatures of Graded Nociceptive Stimulation Across S1, PFC, and ACC in a Large-Animal Intracranial Model</h1>
       <p class="byline">Nickolaj Ajay Atchuthan, Christian Kruse Pedersen, Winnie Jensen and Suzan Meijs · Center for Neuroplasticity and Pain, Aalborg University<br>
         <a href="poster.pdf">Poster (PDF)</a> · <a href="https://github.com/nicaja/IASP-2026-Graded-Nociceptive-Stimulation">Code and results on GitHub</a></p>
-      <p class="lede">We recorded S1, PFC and ACC simultaneously in 18 anaesthetised pigs while stimulating the ulnar nerve at 2, 10 and 20 times motor threshold. Graded stimulation increased phase-locked (evoked) power in all three regions, and corrected time–frequency maps localised early total-power differences in S1 and ACC.</p>
+      <p class="lede">We recorded the primary somatosensory cortex (S1), prefrontal cortex (PFC) and anterior cingulate cortex (ACC) simultaneously in 18 anaesthetised pigs while stimulating the ulnar nerve at 2, 10 and 20 times motor threshold. Graded stimulation increased phase-locked (evoked) power in all three regions, and corrected time–frequency maps localised early total-power differences in S1 and ACC.</p>
     </header>
 
     <section class="study" aria-labelledby="study-title">
@@ -32,7 +32,7 @@
         </div>
         <div>
           <p class="label">Methods</p>
-          <p>Eighteen female Danish Landrace pigs were anaesthetised with propofol and fentanyl. Micro-ECoG arrays were placed on S1 and PFC, and a depth array was introduced towards the ACC (17 animals after quality control). The right ulnar nerve was stimulated with biphasic pulses at 2×, 10× and 20× motor threshold (MT) in ascending order, with stimulus onsets jittered by ±250 ms (154 sequences). Power at 35–120 Hz over 0–400 ms was compared between intensities with mixed models (animal random effects, Holm correction), and 20–200 Hz time–frequency maps with TFCE.</p>
+          <p>Eighteen female Danish Landrace pigs were anaesthetised with propofol and fentanyl. Micro-ECoG arrays (surface electrode grids) were placed on S1 and PFC, and a depth array was introduced towards the ACC (17 animals after quality control). The right ulnar nerve was stimulated with biphasic pulses at 2×, 10× and 20× motor threshold (MT) in ascending order to avoid carry-over from stronger stimulation, with stimulus onsets jittered by ±250 ms (154 sequences, each a run at all three intensities). Power at 35–120 Hz over 0–400 ms was compared between intensities with mixed models (animal random effects, Holm correction), and 20–200 Hz time–frequency maps with threshold-free cluster enhancement (TFCE).</p>
         </div>
       </div>
     </section>
@@ -80,23 +80,23 @@
           <button type="button" id="all" class="pill">All animals</button>
           <span class="readout" id="readout" aria-live="polite"></span>
         </div>
-        <p class="caption">One dot per animal: its change between the two intensities, averaged over its stimulation sequences, with a line joining the same animal across total, evoked and induced power. Squares are the estimates of Fig. 3. Hover over or click an animal to see its own waveforms; ratios above 3 are drawn as triangles at the top.</p>
+        <p class="caption">One dot per animal: its power ratio between the two intensities (higher ÷ lower), averaged over its stimulation sequences, with a line joining the same animal across total, evoked and induced power. Squares are the estimates of Fig. 3. Hover over or click an animal to see its own waveforms; ratios above 3 are drawn as triangles at the top.</p>
       </article>
 
       <article class="result">
         <p class="label">Time–frequency maps</p>
         <h3>Corrected total-power differences appeared within ~160 ms in S1 and ACC</h3>
-        <p>Four of the nine total-power maps survived correction: 10× and 20× vs 2× MT in S1 and ACC. Differences were largest at 20–30 Hz, 85–105 ms after stimulation; at 20× vs 2× MT the ACC cluster extended to ~160 Hz. No map survived in PFC or for 20× vs 10× MT.</p>
+        <p>Four of the nine total-power maps survived correction: 10× and 20× vs 2× MT in S1 and ACC. Differences were largest at 20–30 Hz, 85–105 ms after stimulation; at 20× vs 2× MT the ACC cluster extended to about 160 Hz. No map survived in PFC or for 20× vs 10× MT.</p>
         <figure class="poster-figure">
           <a href="figures/poster-fig4-maps.svg"><img src="figures/poster-fig4-maps.svg" alt="Total-power difference maps from 20 to 200 Hz and 0 to 400 ms for each region at 10 and 20 times versus 2 times motor threshold, with outlines around the corrected regions."></a>
-          <figcaption>Fig. 4. Mean within-animal difference in total power, 20–200 Hz over the first 400 ms after stimulation.</figcaption>
+          <figcaption>Fig. 4. Mean within-animal difference in total power, 20–200 Hz over the first 400 ms after stimulation. The 20× vs 10× MT maps are not shown; none survived correction.</figcaption>
         </figure>
       </article>
 
       <article class="result">
         <p class="label">Correlations</p>
         <h3>Total and induced power changed together within each region</h3>
-        <p>Evoked changes co-varied between regions (ρ 0.45–0.62 from 2× to 20× MT). A steeper PFC or ACC exponent went with smaller power changes (blue; ρ −0.3 to −0.8).</p>
+        <p>Total and induced changes went together within every region (ρ ≥ 0.94 at 20× vs 2× MT), and evoked changes co-varied between regions (ρ 0.45–0.62). A steeper PFC or ACC exponent went with smaller power changes (blue; ρ −0.3 to −0.8).</p>
         <div class="controls">
           <div class="tabs" role="group" aria-label="Contrast" id="corr-contrasts"></div>
         </div>
@@ -104,13 +104,13 @@
           <svg id="matrix-plot" class="plot" viewBox="0 0 560 570" role="img" aria-label="Lower triangle of Spearman correlations between the changes of 21 measures, seven per region, across 17 animals."></svg>
           <svg id="scatter-plot" class="plot" viewBox="570 0 390 570" role="img" aria-label="The 17 animals' changes in the two measures of the selected cell."></svg>
         </div>
-        <p class="caption">Each cell: how two measures’ changes between the intensities co-vary across the 17 animals with data in all three regions (Spearman ρ, computed on ranks); the diagonal is each measure with itself. Hover over or click a cell to see the animals behind it. Exponent and offset: slope and level of the background spectrum; aperiodic-adjusted power: 35–120 Hz power above it.</p>
+        <p class="caption">Each cell: how two measures’ changes between the intensities co-vary across the 17 animals with data in all three regions (Spearman ρ, a rank correlation); the diagonal is each measure with itself. Hover over or click a cell to see the animals behind it. Exponent and offset: slope and level of the background spectrum; aperiodic-adjusted power: 35–120 Hz power above it.</p>
       </article>
 
       <article class="result">
         <p class="label">Conclusions</p>
         <h3>Separating the response components revealed intensity effects that a broad power average did not</h3>
-        <p>Graded ulnar-nerve stimulation increased phase-locked (evoked) power in S1, PFC and ACC, and corrected time–frequency maps localised early total-power differences in S1 and ACC. Cortical measures of nociception should state their response component and recording site. Recorded under general anaesthesia, these responses capture cortical nociceptive processing. Electrical nerve stimulation bypasses peripheral receptors, so responses to natural noxious stimuli may differ, and all animals were female.</p>
+        <p>Cortical measures of nociception should state their response component and recording site. Recorded under general anaesthesia, these responses capture cortical nociceptive processing. Electrical nerve stimulation bypasses peripheral receptors, so responses to natural noxious stimuli may differ, and all animals were female, so sex differences could not be assessed.</p>
       </article>
     </section>
 
