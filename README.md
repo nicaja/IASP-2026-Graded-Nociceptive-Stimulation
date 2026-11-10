@@ -4,9 +4,9 @@
 
 *One animal at a time: its waveforms at 2× and 20× motor threshold (MT) and its power ratio, one dot per animal. Evoked power was higher at 20× MT in 14 of 18 animals in S1, 17 of 18 in PFC and 17 of 17 in ACC. [Interactive version](https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/)*
 
-Analysis code, results and the poster's figures for our IASP 2026 poster and the accompanying article. We recorded the primary somatosensory cortex (S1), prefrontal cortex (PFC) and anterior cingulate cortex (ACC) simultaneously in 18 anaesthetised pigs while stimulating the ulnar nerve at 2, 10 and 20 times motor threshold, and asked which part of the cortical response follows stimulus intensity.
+Analysis code and results for our IASP 2026 poster and the accompanying article, with the poster's figures. We recorded from the primary somatosensory cortex (S1), prefrontal cortex (PFC) and anterior cingulate cortex (ACC) simultaneously in 18 anaesthetised pigs while stimulating the ulnar nerve at 2, 10 and 20 times motor threshold (MT), and asked which part of the cortical response follows stimulus intensity.
 
-**IASP 2026 World Congress on Pain · Bangkok · Poster 105 (abstract 10418), Thursday 29 October 2026**
+**Presented at the IASP 2026 World Congress on Pain, Bangkok · Poster 105 (abstract 10418)**
 
 ## Poster
 
@@ -16,23 +16,23 @@ Nickolaj Ajay Atchuthan, Christian Kruse Pedersen, Winnie Jensen and Suzan Meijs
 
 [Poster (PDF)](docs/poster.pdf) · [Interactive page](https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/)
 
-Poster 105 in poster session 6 (Thursday 29 October 2026, 15:15–16:45, Exhibit Hall EH102-103); abstract 10418.
+Poster session 6, Thursday 29 October 2026, 15:15–16:45, Exhibit Hall EH102-103.
 
 The same code produces every result in the article *Graded peripheral nerve stimulation is associated with phase-locked cortical power increases in anaesthetised pigs* (in preparation).
 
 ## What we found
 
-Micro-ECoG arrays (surface electrode grids) recorded S1 and PFC, and a depth array the ACC (17 animals after quality control), over 154 stimulation sequences, each a run at all three intensities. Power at 35–120 Hz over 0–400 ms was compared between intensities with mixed models (animal random effects, Holm correction), and 20–200 Hz time–frequency maps with threshold-free cluster enhancement (TFCE).
+Micro-ECoG arrays (surface electrode grids) recorded S1 and PFC, and a depth array recorded the ACC (17 animals after quality control). The analysis covers 154 stimulation sequences, each a run at all three intensities. Power at 35–120 Hz over 0–400 ms was compared between intensities with mixed models (animal random effects, Holm correction), and 20–200 Hz time–frequency maps with threshold-free cluster enhancement (TFCE).
 
 - Evoked (phase-locked) power was higher at 10× and 20× than at 2× MT in all three regions. At 20× MT it was 1.25 times the 2× MT value in S1 and PFC and 1.75 times in ACC (Holm P ≤ 0.005 for all six contrasts against 2× MT). It was also higher at 20× than at 10× MT in PFC and ACC.
 - No total- or induced-power contrast survived correction.
 - Four of the nine total-power maps survived correction: 10× and 20× vs 2× MT in S1 and ACC, within about 160 ms of stimulation. Differences were largest at 20–30 Hz, 85–105 ms after stimulation; at 20× vs 2× MT the ACC cluster extended to about 160 Hz.
 
-Separating the response components revealed intensity effects that a broad power average did not, so cortical measures of nociception should state their response component and recording site. Electrical nerve stimulation bypasses peripheral receptors, so responses to natural noxious stimuli may differ, and all animals were female, so sex differences could not be assessed.
+Separating the response components revealed intensity effects that a broad power average did not, so cortical measures of nociception should state their response component and recording site. Electrical nerve stimulation bypasses peripheral receptors, so responses to natural noxious stimuli may differ; all animals were female, so sex differences could not be assessed.
 
 ![Total, evoked and induced power ratios for every region and contrast](docs/figures/poster-fig3-power-components.svg)
 
-*Fig. 3 of the poster. Power ratios between intensities with 95% confidence intervals; filled markers are significant after Holm correction. Total: mean single-trial power; evoked: power of the average waveform; induced: total minus evoked.*
+*Fig. 3 of the poster. Power ratios between intensities with 95% confidence intervals; filled markers with an asterisk are significant after Holm correction. Circles: total power (mean single-trial power); squares: evoked power (power of the average waveform); triangles: induced power (total minus evoked).*
 
 ## Poster figures and interactive page
 
@@ -48,7 +48,7 @@ The [page](https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/) s
 | [Fig. 3](docs/figures/poster-fig3-power-components.svg) | Total, evoked and induced power ratios |
 | [Fig. 4](docs/figures/poster-fig4-maps.svg) | Total-power maps with their corrected regions |
 
-`python -m gradedstim page` writes the page's data and the GIF above from `results/`. The article's own figures and supplementary tables will be added here once it is published.
+`python -m gradedstim page` writes the page's data and the GIF above from `results/`. The poster's figures were drawn from the same results with the poster's own layout script, which is not part of this repository. The article's own figures and supplementary tables will be added here once it is published.
 
 ## Code
 
@@ -92,7 +92,7 @@ Before release, this code was run on the same data and every output was compared
 - The supplementary tables come out identical to the article's.
 - `preprocessing/clean_epochs.py` reproduces the cleaned epochs of all 154 sequences bit for bit. Re-filtering a raw recording with `make_epochs.py` on a CPU differs from the original GPU-filtered epochs by at most 0.0001 µV.
 
-`pytest` checks the committed results for internal consistency: Holm adjustments, confidence intervals and the map correction.
+`pytest` (installed with `pip install -e .[test]`) checks the committed results for internal consistency: Holm adjustments, confidence intervals and the map correction.
 
 ## Data
 

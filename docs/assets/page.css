@@ -37,6 +37,7 @@ h4 { font: 600 1rem/1.35 var(--serif); color: var(--ink); margin: 32px 0 10px; }
 .poster-figure a { display: block; position: relative; }
 .poster-figure img { display: block; width: 100%; height: auto; }
 .poster-figure figcaption { margin-top: 6px; font-size: 14.5px; color: var(--muted); max-width: 52em; }
+.key { width: .78em; height: .78em; margin-right: .3em; vertical-align: -.04em; }
 .pair { display: grid; grid-template-columns: 2220fr 1704fr; gap: 10px 28px; align-items: start; margin-top: 28px; }
 .pair figcaption { grid-column: 1 / -1; }
 .panel { position: absolute; top: 0; left: 0; font: 600 1.05rem var(--serif); color: var(--ink); }

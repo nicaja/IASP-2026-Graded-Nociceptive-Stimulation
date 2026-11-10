@@ -16,7 +16,7 @@
       <h1>Temporal and Spectral Signatures of Graded Nociceptive Stimulation Across S1, PFC, and ACC in a Large-Animal Intracranial Model</h1>
       <p class="byline">Nickolaj Ajay Atchuthan, Christian Kruse Pedersen, Winnie Jensen and Suzan Meijs · Center for Neuroplasticity and Pain, Aalborg University<br>
         <a href="poster.pdf">Poster (PDF)</a> · <a href="https://github.com/nicaja/IASP-2026-Graded-Nociceptive-Stimulation">Code and results on GitHub</a></p>
-      <p class="lede">We recorded the primary somatosensory cortex (S1), prefrontal cortex (PFC) and anterior cingulate cortex (ACC) simultaneously in 18 anaesthetised pigs while stimulating the ulnar nerve at 2, 10 and 20 times motor threshold. Graded stimulation increased phase-locked (evoked) power in all three regions, and corrected time–frequency maps localised early total-power differences in S1 and ACC.</p>
+      <p class="lede">We recorded from the primary somatosensory cortex (S1), prefrontal cortex (PFC) and anterior cingulate cortex (ACC) simultaneously in 18 anaesthetised pigs while stimulating the ulnar nerve at 2, 10 and 20 times motor threshold. Graded stimulation increased phase-locked (evoked) power in all three regions, and corrected time–frequency maps localised early total-power differences in S1 and ACC.</p>
     </header>
 
     <section class="study" aria-labelledby="study-title">
@@ -62,7 +62,7 @@
         <p>At 20× MT, evoked power was 1.25 times the 2× MT value in S1 and PFC and 1.75 times in ACC; all six 10× and 20× vs 2× contrasts had Holm P ≤ 0.005. Evoked power was also higher at 20× than at 10× MT in PFC and ACC. No total- or induced-power contrast survived correction.</p>
         <figure class="poster-figure">
           <a href="figures/poster-fig3-power-components.svg"><img src="figures/poster-fig3-power-components.svg" alt="Power ratios between intensities for total, evoked and induced power in each region and contrast, with 95% confidence intervals."></a>
-          <figcaption>Fig. 3. Total: mean single-trial power. Evoked: power of the average waveform (phase-locked). Induced: total minus evoked (non-phase-locked). Lines: 95% confidence intervals; filled markers: significant after Holm correction.</figcaption>
+          <figcaption>Fig. 3. <svg class="key" viewBox="0 0 16 16" role="img" aria-label="Black circle"><circle cx="8" cy="8" r="6" fill="#22211E"/></svg>Total: mean single-trial power. <svg class="key" viewBox="0 0 16 16" role="img" aria-label="Teal square"><rect x="2.5" y="2.5" width="11" height="11" fill="#1F6F78"/></svg>Evoked: power of the average waveform (phase-locked). <svg class="key" viewBox="0 0 16 16" role="img" aria-label="Sand triangle"><path d="M8 2 L14.5 14 L1.5 14 Z" fill="#B58A55"/></svg>Induced: total minus evoked (non-phase-locked). Lines: 95% confidence intervals; filled markers with an asterisk: significant after Holm correction.</figcaption>
         </figure>
 
         <h4 id="explorer-title">Each animal behind Fig. 3</h4>
@@ -80,7 +80,7 @@
           <button type="button" id="all" class="pill">All animals</button>
           <span class="readout" id="readout" aria-live="polite"></span>
         </div>
-        <p class="caption">One dot per animal: its power ratio between the two intensities (higher ÷ lower), averaged over its stimulation sequences, with a line joining the same animal across total, evoked and induced power. Squares are the estimates of Fig. 3. Hover over or click an animal to see its own waveforms; ratios above 3 are drawn as triangles at the top.</p>
+        <p class="caption">One dot per animal: its power ratio between the two intensities (higher ÷ lower), averaged over its stimulation sequences, with a line joining the same animal across total, evoked and induced power. Squares with lines are the model estimates and confidence intervals of Fig. 3, filled where significant. Hover over or click an animal to see its own waveforms; ratios above 3 are drawn as triangles at the top.</p>
       </article>
 
       <article class="result">
@@ -96,7 +96,7 @@
       <article class="result">
         <p class="label">Correlations</p>
         <h3>Total and induced power changed together within each region</h3>
-        <p>Total and induced changes went together within every region (ρ ≥ 0.94 at 20× vs 2× MT), and evoked changes co-varied between regions (ρ 0.45–0.62). A steeper PFC or ACC exponent went with smaller power changes (blue; ρ −0.3 to −0.8).</p>
+        <p>At 20× vs 2× MT, total and induced changes correlated at ρ ≥ 0.94 within every region, and evoked changes co-varied between regions (ρ 0.45–0.62). A steeper PFC or ACC exponent went with smaller power changes (blue; ρ −0.3 to −0.8).</p>
         <div class="controls">
           <div class="tabs" role="group" aria-label="Contrast" id="corr-contrasts"></div>
         </div>
@@ -104,18 +104,18 @@
           <svg id="matrix-plot" class="plot" viewBox="0 0 560 570" role="img" aria-label="Lower triangle of Spearman correlations between the changes of 21 measures, seven per region, across 17 animals."></svg>
           <svg id="scatter-plot" class="plot" viewBox="570 0 390 570" role="img" aria-label="The 17 animals' changes in the two measures of the selected cell."></svg>
         </div>
-        <p class="caption">Each cell: how two measures’ changes between the intensities co-vary across the 17 animals with data in all three regions (Spearman ρ, a rank correlation); the diagonal is each measure with itself. Hover over or click a cell to see the animals behind it. Exponent and offset: slope and level of the background spectrum; aperiodic-adjusted power: 35–120 Hz power above it.</p>
+        <p class="caption">Each cell: how two measures’ changes between the intensities co-vary across the 17 animals with data in all three regions (Spearman ρ, a rank correlation); the diagonal is each measure with itself. Hover over or click a cell to see the animals behind it. Evoked fraction: evoked ÷ total power; exponent and offset: slope and level of the background spectrum; aperiodic-adjusted power: 35–120 Hz power above it.</p>
       </article>
 
       <article class="result">
         <p class="label">Conclusions</p>
         <h3>Separating the response components revealed intensity effects that a broad power average did not</h3>
-        <p>Cortical measures of nociception should state their response component and recording site. Recorded under general anaesthesia, these responses capture cortical nociceptive processing. Electrical nerve stimulation bypasses peripheral receptors, so responses to natural noxious stimuli may differ, and all animals were female, so sex differences could not be assessed.</p>
+        <p>Cortical measures of nociception should therefore state their response component and recording site. Recorded under general anaesthesia, these responses capture cortical nociceptive processing. Electrical nerve stimulation bypasses peripheral receptors, so responses to natural noxious stimuli may differ; all animals were female, so sex differences could not be assessed.</p>
       </article>
     </section>
 
     <footer>
-      <p>The figures are the poster’s; every number in them and in the interactive figures comes from <code>results/</code> in the repository. The recordings are available from the corresponding author on reasonable request.</p>
+      <p>The figures are the poster’s; every number in them and in the interactive figures comes from <code>results/</code> in the repository. The recordings are available on reasonable request from the first author (<a href="https://atchuthan.com">atchuthan.com</a>).</p>
     </footer>
   </main>
   <script type="module" src="assets/page.js"></script>
