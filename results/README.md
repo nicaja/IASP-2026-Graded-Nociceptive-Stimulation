@@ -19,3 +19,15 @@ recordings put back; `with_copies_and_animal13_acc`: both). Each folder holds th
 
 `software_versions.json` lists the package versions of the run. The `statistics` stage also writes the
 article's supplementary tables to `tables/` (kept out of the repository until the article is published).
+
+## Checks against the reported run
+
+Before release, this code was run on the same data and every output was compared with the run reported in the article:
+
+- Features of all 154 sequences agree to floating-point rounding (relative differences below 2 × 10⁻¹³).
+- The corrected time–frequency maps, permutation null distributions and corrected masks are identical.
+- Power estimates agree within 10⁻¹⁰ and their P values within 10⁻⁷. The aperiodic estimates agree within 2 × 10⁻⁸ (their spectral fits are slightly more sensitive to rounding). Every Holm decision is unchanged in all four analyses.
+- The supplementary tables come out identical to the article's.
+- `preprocessing/clean_epochs.py` reproduces the cleaned epochs of all 154 sequences bit for bit. Re-filtering a raw recording with `make_epochs.py` on a CPU differs from the original GPU-filtered epochs by at most 0.0001 µV.
+
+`pytest` (installed with `pip install -e .[test]`) checks the committed results for internal consistency: Holm adjustments, confidence intervals and the map correction.
