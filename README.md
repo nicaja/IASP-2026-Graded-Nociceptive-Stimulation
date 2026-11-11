@@ -4,7 +4,7 @@
 
 *One animal at a time: its waveforms at 2× and 20× motor threshold (MT) and its power ratio, one dot per animal.*
 
-Code and results for poster 105 (abstract 10418) at the IASP 2026 World Congress on Pain, Bangkok, and for the accompanying article (in preparation).
+Code and results for poster 105 (abstract 10418) at the IASP 2026 World Congress on Pain, Bangkok, and for the accompanying article (in preparation). The study is part of the PhD project [At the Surface and Below](https://vbn.aau.dk/en/projects/p%C3%A5-overfladen-og-i-dybden-karakterisering-og-afkodning-af-kortika/).
 
 [Interactive page](https://nicaja.github.io/IASP-2026-Graded-Nociceptive-Stimulation/) · [Poster (PDF)](docs/poster.pdf)
 
@@ -12,7 +12,7 @@ Nickolaj Ajay Atchuthan, Christian Kruse Pedersen, Winnie Jensen and Suzan Meijs
 
 ## What we found
 
-We recorded from the primary somatosensory cortex (S1), prefrontal cortex (PFC) and anterior cingulate cortex (ACC) simultaneously in 18 anaesthetised pigs while stimulating the ulnar nerve at 2, 10 and 20 times motor threshold.
+Pain lacks an objective measure, and much of what is known about how the brain processes nociceptive input comes from rodents or from non-invasive recordings in humans. The pig, with a large, gyrencephalic brain closer to the human brain, offers a translational bridge in which the cortex can be recorded directly. We recorded from the primary somatosensory cortex (S1), prefrontal cortex (PFC) and anterior cingulate cortex (ACC) simultaneously in 18 anaesthetised pigs while stimulating the ulnar nerve at 2, 10 and 20 times motor threshold.
 
 - Evoked (phase-locked) power was higher at 10× and 20× than at 2× MT in all three regions. At 20× MT it was 1.25 times the 2× MT value in S1 and PFC and 1.75 times in ACC.
 - No total- or induced-power contrast survived correction.

@@ -25,6 +25,7 @@ h3 { font: 600 1.08rem/1.35 var(--serif); color: var(--ink); margin: 0 0 6px; }
 
 .columns { display: grid; grid-template-columns: 1fr 1.6fr; gap: 28px 40px; }
 .columns p { margin: 0; }
+.columns .label:not(:first-child) { margin-top: 16px; }
 .columns ol { margin: 0; padding-left: 1.2em; }
 .columns li { margin-bottom: 4px; }
 
